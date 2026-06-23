@@ -1,51 +1,59 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
+const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function ScrambleText({ text, speed = 45 }) {
-  const [displayText, setDisplayText] = useState(text);
-  const iterations = useRef(0);
-  const intervalRef = useRef(null);
+function FlapSegment({ targetChar, speed = 40 }) {
+  const [currentChar, setCurrentChar] = useState(" ");
 
   useEffect(() => {
-    iterations.current = 0;
-    clearInterval(intervalRef.current);
+    const targetIdx = FLAP_CHARS.indexOf(targetChar.toUpperCase());
+    if (targetIdx === -1) {
+      setCurrentChar(targetChar);
+      return;
+    }
 
-    intervalRef.current = setInterval(() => {
-      setDisplayText((prev) =>
-        text
-          .split("")
-          .map((char, index) => {
-            if (char === " ") return " ";
-            if (index < iterations.current) return text[index];
-            return CHARS[Math.floor(Math.random() * CHARS.length)];
-          })
-          .join("")
-      );
-
-      if (iterations.current >= text.length) {
-        clearInterval(intervalRef.current);
+    let currentIdx = 0;
+    const interval = setInterval(() => {
+      setCurrentChar(FLAP_CHARS[currentIdx]);
+      
+      if (currentIdx === targetIdx) {
+        clearInterval(interval);
+      } else {
+        currentIdx = (currentIdx + 1) % FLAP_CHARS.length;
       }
-
-      iterations.current += 1 / 3;
     }, speed);
 
-    return () => clearInterval(intervalRef.current);
-  }, [text, speed]);
+    return () => clearInterval(interval);
+  }, [targetChar, speed]);
 
-  return <span>{displayText}</span>;
+  return (
+    <span className="flap-cell">
+      {currentChar}
+    </span>
+  );
+}
+
+function FlapRow({text, length = 22, speed = 40}) {
+  const paddedText = text.padEnd(length, " ").slice(0, length);
+  return (
+    <div style= {{ display: "flex", gap: "2px", justifyContent: "center"}}>
+      {paddedText.split("").map((char, i) => (
+        <FlapSegment key={i} targetChar={char} speed={speed + (i*2)} />
+      ))}
+    </div>
+  )
 }
 
 export default function Home() {
-  const [role, setRole] = useState("EMBEDDED ENGINEER");
+  const [role, setRole] = useState("High School Junior");
 
   useEffect(() => {
-    const roles = ["EMBEDDED ENGINEER", "HARDWARE DESIGNER", "SOFTWARE DEVELOPER"];
+    const roles = ["embedded systems", "software developer", "aviation", "aspiring engineer"];
     let i = 0;
     const interval = setInterval(() => {
       i = (i + 1) % roles.length;
       setRole(roles[i]);
-    }, 4000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,14 +63,43 @@ export default function Home() {
         html, body {
           margin: 0;
           padding: 0;
-          background: #0a0a0a;
+          background: #0a0a0c;
+          font-family: "Courier New", Courier, monospace;
+          overflow-x: hidden;
         }
-        .hover-target {
-          transition: all 0.2s ease !important;
+        
+        .flap-cell {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 8rem;
+          height: 3.5rem;
+          background: linear-gradient(to bottom, #151518 49%, #000000 51%);
+          color: #f0f0f0;
+          font-size: 1.8rem;
+          font-weight: bold;
+          border-radius: 8px;
+          border: 1px solid #25252a;
+          box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);
+          position: relative;
         }
-        .hover-target:hover {
-          background: rgba(0, 255, 102, 0.1) !important;
-          box-shadow: 0 0 10px rgba(0, 255, 102, 0.3) !important;
+
+        .flap-cell::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-flap {
+          transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .nav-flap:hover {
+          border-color: #d19a66 !important;
+          transform: translateY(-2px);
         }
       `}</style>
 
@@ -72,63 +109,77 @@ export default function Home() {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        backgroundColor: "#0a0a0a",
-        color: "#fff",
-        fontFamily: "Courier New, monospace",
-        padding: "20px",
+        padding: "40px 20px",
         boxSizing: "border-box"
       }}>
         <div style={{
+          background: "#111115",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0 20px 50px rgba(0,0,0,0.7), inset 0 0 2px rgba(255,255,255,0.1)",
+          border: "4px solid #1a1a22",
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
-          textAlign: "center",
-          maxWidth: "800px"
+          gap: "24px",
+          width: "100%",
+          maxWidth: "750px"
         }}>
-          <h1 style={{ fontSize: "2.5rem", margin: 0, fontWeight: "bold", letterSpacing: "2px" }}>
-            <ScrambleText text="HELLO I AM ABHIRAM" />
-          </h1>
+          
+          <div style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            color: "#55555c", 
+            fontSize: "0.75rem", 
+            fontWeight: "bold",
+            letterSpacing: "4px",
+            padding: "0 10px"
+          }}>
+            <span>Good morning!</span>
+            <span>I am ___ years old</span>
+          </div>
 
-          <h2 style={{ fontSize: "1.8rem", margin: 0, color: "#00ff66", letterSpacing: "1px" }}>
-            <ScrambleText text={role} />
-          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <FlapRow text="Abhiram Vadali" length={18} />
+            <FlapRow text={role} length={18} />
+          </div>
 
-          <p style={{ fontSize: "1.1rem", margin: 0, color: "#888" }}>
-            <ScrambleText text="VIEW MY WORK BELOW" speed={20} />
-          </p>
+          <div style={{ marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px" }}>
+            <FlapRow text="VIEW WORK BELOW" length={18} speed={20} />
+          </div>
         </div>
 
         <nav style={{
-          marginTop: "50px",
+          marginTop: "60px",
           display: "flex",
-          flexDirection: "row",
-          flexWrap: "nowrap",
-          gap: "24px",
-          justifyContent: "center"
+          gap: "20px",
+          justifyContent: "center",
+          flexWrap: "wrap"
         }}>
-          <a href="#projects" className="hover-target" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", color: "#00ff66", border: "1px solid #00ff66",
-            fontWeight: "bold", fontSize: "0.9rem", background: "transparent",
-            whiteSpace: "nowrap", boxSizing: "border-box", width: "130px",
-            height: "36px", lineHeight: "1", padding: "0"
-          }}>PROJECTS</a>
-
-          <a href="#about" className="hover-target" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", color: "#00ff66", border: "1px solid #00ff66",
-            fontWeight: "bold", fontSize: "0.9rem", background: "transparent",
-            whiteSpace: "nowrap", boxSizing: "border-box", width: "130px",
-            height: "36px", lineHeight: "1", padding: "0"
-          }}>ABOUT</a>
-
-          <a href="#contact" className="hover-target" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", color: "#00ff66", border: "1px solid #00ff66",
-            fontWeight: "bold", fontSize: "0.9rem", background: "transparent",
-            whiteSpace: "nowrap", boxSizing: "border-box", width: "130px",
-            height: "36px", lineHeight: "1", padding: "0"
-          }}>CONTACT</a>
+          {["PROJECTS", "CONTACT ME"].map((target) => (
+            <a 
+              key={target}
+              href={`#${target.toLowerCase()}`} 
+              className="nav-flap" 
+              style={{
+                display: "inline-flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                textDecoration: "none", 
+                color: "#a0a0aa", 
+                border: "2px solid #25252a",
+                background: "#111115",
+                fontWeight: "bold", 
+                fontSize: "0.85rem", 
+                letterSpacing: "2px",
+                width: "140px",
+                height: "44px",
+                borderRadius: "6px",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+              }}
+            >
+              {target}
+            </a>
+          ))}
         </nav>
       </div>
     </>
