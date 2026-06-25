@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Projects from "./pages/Projects";
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
@@ -33,7 +34,7 @@ function FlapSegment({ targetChar, speed = 10}) {
   );
 }
 
-function FlapRow({text, length = 22, speed = 10}) {
+function FlapRow({text, length = 22, speed = 50}) {
   const paddedText = text.padEnd(length, " ").slice(0, length);
   return (
     <div style= {{ display: "flex", gap: "2px", justifyContent: "center"}}>
@@ -45,7 +46,20 @@ function FlapRow({text, length = 22, speed = 10}) {
 }
 
 export default function Home() {
+  const getGreeting = () => {
+    const tc = new Date(); // timecheck variable 
+
+    if (tc.getHours() >= 0 && tc.getHours() < 12) {
+      return "Good morning!"
+    } else if (tc.getHours() > 12 && tc.getHours() < 17) {
+      return "Good afternoon!"
+    } else if (tc.getHours() > 17) {
+      return "Good evening!"
+    }
+  };
+
   const [role, setRole] = useState("High School Junior");
+  const [currentView, setCurrentView] = useState("home"); 
 
   useEffect(() => {
     const roles = ["embedded systems", "software developer", "aviation", "aspiring engineer"];
@@ -56,6 +70,10 @@ export default function Home() {
     }, 7000);
     return () => clearInterval(interval);
   }, []);
+
+  if (currentView == "projects") {
+    return <Projects onBack={() => setCurrentView("home")} />;
+  }
 
   return (
     <>
@@ -134,18 +152,22 @@ export default function Home() {
             letterSpacing: "4px",
             padding: "0 10px"
           }}>
-            <span>Good {}!</span>
+          </div>
+          
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <FlapRow text={getGreeting()} length={18} speed={20} />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow text="Abhiram Vadali" length={18} />
-            <FlapRow text={role} length={18} />
           </div>
 
-          <div style={{ marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px" }}>
-            <FlapRow text="VIEW WORK BELOW" length={18} speed={20} />
+          <div style={{marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px"}}>
+            <FlapRow text={role} length={18} />
           </div>
-          <span>I am {((new Date() - new Date('2010-12-29T18:00:00+05:30')) / (1000 * 60 * 60 * 24))} days old</span>
+          
+          <span>I am {Math.floor((new Date() - new Date('2010-12-29T18:00:00+05:30')) / (1000 * 60 * 60 * 24))} days old</span>
+          <span>{getGreeting()}</span>
 
         </div>
 
@@ -154,12 +176,15 @@ export default function Home() {
           display: "flex",
           gap: "20px",
           justifyContent: "center",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
+          fontFamily: '"Courier New", Courier, monospace'
         }}>
-          {["PROJECTS", "CONTACT"].map((target) => (
-            <a 
+          {["PROJECTS", "CONTACT", "ABOUT ME"].map((target) => (
+            <button 
               key={target}
-              href={`#${target.toLowerCase()}`} 
+              onClick={() => {
+                if (target === "PROJECTS") setCurrentView("projects");
+              }}
               className="nav-flap" 
               style={{
                 display: "inline-flex", 
@@ -175,11 +200,12 @@ export default function Home() {
                 width: "140px",
                 height: "44px",
                 borderRadius: "6px",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                cursor: "pointer"
               }}
             >
               {target}
-            </a>
+            </button>
           ))}
         </nav>
       </div>
