@@ -47,14 +47,14 @@ function FlapRow({text, length = 22, speed = 50}) {
 
 export default function Home() {
   const getGreeting = () => {
-    const tc = new Date(); // timecheck variable 
-
-    if (tc.getHours() >= 0 && tc.getHours() < 12) {
-      return "Good morning!"
-    } else if (tc.getHours() > 12 && tc.getHours() < 17) {
-      return "Good afternoon!"
-    } else if (tc.getHours() > 17) {
-      return "Good evening!"
+    const hour = new Date().getHours(); // query system clock for hrs since 0:00
+    
+    if (hour < 12) {
+      return "Good morning!";
+    } else if (hour < 17) {
+      return "Good afternoon!";
+    } else {
+      return "Good evening!";
     }
   };
 
@@ -62,7 +62,7 @@ export default function Home() {
   const [currentView, setCurrentView] = useState("home"); 
 
   useEffect(() => {
-    const roles = ["embedded systems", "software developer", "aviation", "aspiring engineer"];
+    const roles = ["embedded systems", "software developer", "aircraft", "aspiring engineer"];
     let i = 0;
     const interval = setInterval(() => {
       i = (i + 1) % roles.length;
