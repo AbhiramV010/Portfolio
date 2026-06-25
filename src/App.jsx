@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function FlapSegment({ targetChar, speed = 40 }) {
+function FlapSegment({ targetChar, speed = 10}) {
   const [currentChar, setCurrentChar] = useState(" ");
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function FlapSegment({ targetChar, speed = 40 }) {
   );
 }
 
-function FlapRow({text, length = 22, speed = 40}) {
+function FlapRow({text, length = 22, speed = 10}) {
   const paddedText = text.padEnd(length, " ").slice(0, length);
   return (
     <div style= {{ display: "flex", gap: "2px", justifyContent: "center"}}>
@@ -53,7 +53,7 @@ export default function Home() {
     const interval = setInterval(() => {
       i = (i + 1) % roles.length;
       setRole(roles[i]);
-    }, 2000);
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
@@ -61,7 +61,7 @@ export default function Home() {
     <>
       <style>{`
         html, body {
-          margin: 0;
+          margin: 1;
           padding: 0;
           background: #0a0a0c;
           font-family: "Courier New", Courier, monospace;
@@ -134,8 +134,7 @@ export default function Home() {
             letterSpacing: "4px",
             padding: "0 10px"
           }}>
-            <span>Good morning!</span>
-            <span>I am ___ years old</span>
+            <span>Good {}!</span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -146,6 +145,8 @@ export default function Home() {
           <div style={{ marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px" }}>
             <FlapRow text="VIEW WORK BELOW" length={18} speed={20} />
           </div>
+          <span>I am {((new Date() - new Date('2010-12-29T18:00:00+05:30')) / (1000 * 60 * 60 * 24))} days old</span>
+
         </div>
 
         <nav style={{
@@ -155,7 +156,7 @@ export default function Home() {
           justifyContent: "center",
           flexWrap: "wrap"
         }}>
-          {["PROJECTS", "CONTACT ME"].map((target) => (
+          {["PROJECTS", "CONTACT"].map((target) => (
             <a 
               key={target}
               href={`#${target.toLowerCase()}`} 
