@@ -1,53 +1,32 @@
 import { useState, useEffect } from 'react';
+import { FlapSegment, FlapRow } from '../App';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function FlapSegment({ targetChar, speed = 10}) {
-  const [currentChar, setCurrentChar] = useState(" ");
+// function to return a card with the project, helps me add more later
+// takes name, description, year, and dev-stack 
 
-  useEffect(() => {
-    const targetIdx = FLAP_CHARS.indexOf(targetChar.toUpperCase());
-    if (targetIdx === -1) {
-      setCurrentChar(targetChar);
-      return;
-    }
-
-    let currentIdx = 0;
-    const interval = setInterval(() => {
-      setCurrentChar(FLAP_CHARS[currentIdx]);
-      
-      if (currentIdx === targetIdx) {
-        clearInterval(interval);
-      } else {
-        currentIdx = (currentIdx + 1) % FLAP_CHARS.length;
-      }
-    }, speed);
-
-    return () => clearInterval(interval);
-  }, [targetChar, speed]);
-
-  return (
-    <span className="flap-cell">
-      {currentChar}
-    </span>
-  );
+function ProjectCard({ name, desc, year, stack, isOnline }) {
+  return ();
 }
 
-function FlapRow({text, length = 22, speed = 50}) {
-  const paddedText = text.padEnd(length, " ").slice(0, length);
-  return (
-    <div style= {{ display: "flex", gap: "2px", justifyContent: "center"}}>
-      {paddedText.split("").map((char, i) => (
-        <FlapSegment key={i} targetChar={char} speed={speed + (i*2)} />
-      ))}
-    </div>
-  )
-}
+// array that contains projects, I can just use a for-each loop to iter through and put them in
+const PROJECTS = [
+  
+];
 
 export default function Projects({ onBack }) {
   return (
     <>
       <style>{`
+        html, body {
+          margin: 1;
+          padding: 0;
+          background: #0a0a0c;
+          font-family: "Courier New", Courier, monospace;
+          overflow-x: hidden;
+        }
+        
         .flap-cell {
           display: inline-flex;
           align-items: center;
@@ -62,7 +41,6 @@ export default function Projects({ onBack }) {
           border: 1px solid #25252a;
           box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);
           position: relative;
-          font-family: "Courier New", Courier, monospace;
         }
 
         .flap-cell::after {
@@ -74,36 +52,76 @@ export default function Projects({ onBack }) {
           height: 1px;
           background: rgba(0, 0, 0, 0.7);
         }
+
+        .nav-flap {
+          transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .nav-flap:hover {
+          border-color: #d19a66 !important;
+          transform: translateY(-2px);
+        }
       `}</style>
 
+        
+
       <div style={{
-        background: "#111115",
-        padding: "30px",
-        borderRadius: "12px",
-        boxShadow: "0 20px 50px rgba(0,0,0,0.7), inset 0 0 2px rgba(255,255,255,0.1)",
-        border: "4px solid #1a1a22",
-        display: "flex",
-        flexDirection: "column",
-        gap: "24px",
-        width: "100%",
-        maxWidth: "550px"
+        width: "100vw",
+        minHeight: "100vh",
+        boxSizing: "border-box",
+        padding: "24px"
       }}>
         
-        <div style={{ 
-          display: "flex", 
-          justifyContent: "space-between", 
-          color: "#55555c", 
-          fontSize: "0.75rem", 
-          fontWeight: "bold",
-          letterSpacing: "4px",
-          padding: "0 10px"
+        <div style={{
+          background: "#111115",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0 20px 50px rgba(0,0,0,0.7), inset 0 0 2px rgba(255,255,255,0.1)",
+          border: "4px solid #1a1a22",
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+          width: "100%",            
+          minHeight: "calc(100vh - 48px)", 
+          boxSizing: "border-box"
         }}>
-        </div>
-        
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px"}}>
-          <FlapRow text="  Projects  " length={12} />
-        </div>
+          <button 
+            onClick={onBack}
+            style={{
+              marginTop: "20px",
+              background: "#25252a",
+              color: "#a0a0aa",
+              border: "2px solid #35353a",
+              padding: "6px 16px",                  
+              cursor: "pointer",
+              fontFamily: '"Courier New", Courier, monospace',
+              fontWeight: "bold",
+              fontSize: 20,                         
+              width: "fit-content",                 
+              alignSelf: "flex-start",
+              borderRadius: "8px"                   
+            }}
+          > BACK
+          </button>
+          
+          <div style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            color: "#55555c", 
+            fontSize: "0.75rem", 
+            fontWeight: "bold",
+            letterSpacing: "4px",
+            padding: "0 10px"
+          }}>
+          </div>
+          
+          {/* Start elements here for projects*/} 
 
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px"}}>
+            <FlapRow text="My Projects" length={11} />
+          </div>
+          
+
+        </div>
       </div>
     </>
   );

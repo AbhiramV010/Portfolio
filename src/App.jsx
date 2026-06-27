@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Projects from "./pages/Projects";
 
+
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function FlapSegment({ targetChar, speed = 10}) {
+export function FlapSegment({ targetChar, speed = 10}) {
   const [currentChar, setCurrentChar] = useState(" ");
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function FlapSegment({ targetChar, speed = 10}) {
   );
 }
 
-function FlapRow({text, length = 22, speed = 50}) {
+export function FlapRow({text, length = 22, speed = 50}) {
   const paddedText = text.padEnd(length, " ").slice(0, length);
   return (
     <div style= {{ display: "flex", gap: "2px", justifyContent: "center"}}>
@@ -71,8 +72,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  if (currentView == "projects") {
-    return <Projects onBack={() => setCurrentView("home")} />;
+  if (currentView === "projects") {
+  return <Projects onBack={() => setCurrentView("home")} />;
   }
 
   return (
@@ -183,8 +184,9 @@ export default function Home() {
             <button 
               key={target}
               onClick={() => {
-                if (target === "PROJECTS") setCurrentView("projects");
-              }}
+                if (target === "PROJECTS") {
+                  setCurrentView("projects");
+              }}}
               className="nav-flap" 
               style={{
                 display: "inline-flex", 
