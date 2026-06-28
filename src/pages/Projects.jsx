@@ -213,6 +213,7 @@ export default function Projects({ onBack }) {
                   <button 
                     type="button" 
                     onClick={() => window.location.href='https://github.com/AbhiramV010/Iris-Lite'}
+                    target="_blank" 
                     style={{
                       background: "#25252a",
                       color: "#a0a0aa",
