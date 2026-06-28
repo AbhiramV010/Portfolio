@@ -230,7 +230,7 @@ export default function Projects({ onBack }) {
               name="Iris-Lite" 
               desc={"A lightweight surveillance prototype built on the Raspberry Pi 4B.\n\nIt uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video.\n\nIt features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline.\n\nTo lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable."} 
               event="STEAM IC 2026 - Computer Science" 
-              stack={["Python 3.12.7", "Linux", "Raspberry Pi", "C++"]} 
+              stack={["Raspberry Pi 4B", "ESP32-C3", "Python 3.12.7", "C++ 17"]} 
               gitHubUrl="https://github.com/AbhiramV010/Iris-Lite"
             />
           </div>
