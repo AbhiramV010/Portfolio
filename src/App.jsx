@@ -168,8 +168,6 @@ export default function Home() {
           </div>
           
           <span>I am {Math.floor((new Date() - new Date('2010-12-29T18:00:00+05:30')) / (1000 * 60 * 60 * 24))} days old</span>
-          <span>{getGreeting()}</span>
-
         </div>
 
         <nav style={{
