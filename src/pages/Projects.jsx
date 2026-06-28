@@ -3,10 +3,7 @@ import { FlapSegment, FlapRow } from '../App';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-// function to return a card with the project, helps me add more later
-// takes name, description, event, and dev-stack 
-
-function ProjectCard({ name, desc, event, stack, isOnline }) {
+function ProjectCard({ name, desc, event, stack, gitHubUrl }) {
   return (
     <div style={{
       background: "#16161c",
@@ -19,7 +16,7 @@ function ProjectCard({ name, desc, event, stack, isOnline }) {
       gap: "16px",
       boxShadow: "0 8px 24px rgba(0,0,0,0.5), inset 0 0 1px rgba(255,255,255,0.05)"
     }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "12px" }}>
         <h3 style={{ 
           color: "#f0f0f0", 
           margin: 0, 
@@ -28,6 +25,9 @@ function ProjectCard({ name, desc, event, stack, isOnline }) {
           letterSpacing: "1px"
         }}>
           {name}
+          <br />
+          <br />
+
         </h3>
         <span style={{ 
           color: "#d19a66", 
@@ -45,16 +45,40 @@ function ProjectCard({ name, desc, event, stack, isOnline }) {
         alignItems: "start", 
         flexGrow: 1 
       }}>
-        <p style={{ 
-          color: "#a0a0aa", 
-          margin: 0, 
-          fontSize: "1.4rem", 
-          lineHeight: "1.6"
-        }}>
-          {desc}
-        </p>
-
-        
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <p style={{ 
+            color: "#a0a0aa", 
+            margin: 0, 
+            fontSize: "1.4rem", 
+            lineHeight: "1.6",
+            whiteSpace: "pre-line"
+          }}>
+            {desc}
+          </p>
+          <br />
+          <br />
+          {gitHubUrl && (
+            <button 
+              type="button" 
+              onClick={() => window.open(gitHubUrl, '_blank')}
+              style={{
+                background: "#25252a",
+                color: "#a0a0aa",
+                border: "2px solid #35353a",
+                padding: "8px 16px",
+                cursor: "pointer",
+                fontFamily: '"Courier New", Courier, monospace',
+                fontWeight: "bold",
+                fontSize: "1.1rem",
+                borderRadius: "6px",
+                width: "fit-content",
+                alignSelf: "center", 
+              }}
+            >
+              GitHub Repository
+            </button>
+          )}
+        </div>
 
         <div style={{ borderLeft: "1px dashed #25252a", height: "100%" }} />
           
@@ -106,7 +130,7 @@ export default function Projects({ onBack }) {
     <>
       <style>{`
         html, body {
-          margin: 1;
+          margin: 0;
           padding: 0;
           background: #0a0a0c;
           font-family: "Courier New", Courier, monospace;
@@ -149,7 +173,7 @@ export default function Projects({ onBack }) {
       `}</style>      
 
       <div style={{
-        width: "100vw",
+        width: "100%",
         minHeight: "100vh",
         boxSizing: "border-box",
         padding: "24px"
@@ -195,10 +219,8 @@ export default function Projects({ onBack }) {
             fontWeight: "bold",
             letterSpacing: "4px",
             padding: "0 10px"
-          }}>
-          </div>
+          }} />
           
-          {/*projects go here*/} 
           <div style={{display: "flex", flexDirection: "column", gap: "16px"}}>
             <FlapRow key={tick} text="My Projects" length={11} />
           </div>
@@ -206,33 +228,10 @@ export default function Projects({ onBack }) {
           <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
             <ProjectCard 
               name="Iris-Lite" 
-              desc={
-                <>
-                  <br />A lightweight surveillance prototype built on the Raspberry Pi 4B.<br /><br /> It uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video. <br /><br /> It features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline. <br /><br /> To lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable.
-                  <br /><br />
-                  <button 
-                    type="button" 
-                    onClick={() => window.location.href='https://github.com/AbhiramV010/Iris-Lite'}
-                    target="_blank" 
-                    style={{
-                      background: "#25252a",
-                      color: "#a0a0aa",
-                      border: "2px solid #35353a",
-                      padding: "8px 16px",
-                      cursor: "pointer",
-                      fontFamily: '"Courier New", Courier, monospace',
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      borderRadius: "6px",
-                      width: "fit-content",
-                    }}
-                  >
-                    GitHub Repository
-                  </button>
-                </>
-              } 
-              event={"STEAM IC 2026 - Computer Science"} 
+              desc={"A lightweight surveillance prototype built on the Raspberry Pi 4B.\n\nIt uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video.\n\nIt features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline.\n\nTo lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable."} 
+              event="STEAM IC 2026 - Computer Science" 
               stack={["Python 3.12.7", "Linux", "Raspberry Pi", "C++"]} 
+              gitHubUrl="https://github.com/AbhiramV010/Iris-Lite"
             />
           </div>
         </div>
