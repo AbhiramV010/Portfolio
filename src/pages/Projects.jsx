@@ -249,8 +249,7 @@ export default function Projects({ onBack }) {
                 <>
                   <br />A platform that I designed to centralize the tracking of volunteer hours. At a local organization, hours were maintained through spreadsheets manually.<br /><br />
                     This increased the chances of human error, data loss, and inconvenient compilation of data. <br /><br /> 
-                    The system aims to solve this problem by providing an automated platform for tracking. <br /><br />
-                    It uses a PostgreSQL database to manage information
+                    The system aims to solve this problem by providing a platform for data storage.
                   <br /><br />
                   <button 
                     type="button" 
