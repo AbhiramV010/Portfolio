@@ -244,7 +244,7 @@ export default function Projects({ onBack }) {
             />
 
             <ProjectCard 
-              name={<FlapRow key={15000} text="EZ-Volunteer Sys" length={19} />}
+              name={<FlapRow key={15000} text="EZ-Volunteer Sys" length={16} />}
               desc={
                 <>
                   <br />A platform that I designed to centralize the tracking of volunteer hours. At a local organization, hours were maintained through spreadsheets manually.<br /><br />
