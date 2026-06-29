@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Projects from "./pages/Projects";
 
-
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
 export function FlapSegment({ targetChar, speed = 10}) {

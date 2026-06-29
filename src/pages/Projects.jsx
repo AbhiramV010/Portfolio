@@ -202,7 +202,7 @@ export default function Projects({ onBack }) {
           
           <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
             <ProjectCard 
-              name="Iris-Lite" 
+              name={<FlapRow key={15000} text="Iris-Lite" length={9} />}
               desc={
                 <>
                   <br />A lightweight surveillance prototype built on the Raspberry Pi 4B.<br /><br />
@@ -212,7 +212,7 @@ export default function Projects({ onBack }) {
                   <br /><br />
                   <button 
                     type="button" 
-                    onClick={() => window.location.href='https://example.com'}
+                    onClick={() => window.location.href='https://github.com/AbhiramV010/Iris-Lite'}
                     style={{
                       background: "#25252a",
                       color: "#a0a0aa",
@@ -235,12 +235,54 @@ export default function Projects({ onBack }) {
                       e.currentTarget.style.color = "#a0a0aa";
                     }}
                   >
-                    Go to Example
+                    Source Code
                   </button>
                 </>
               } 
-              event={"STEAM ICAC 2026 - Computer Science"} 
+              event={"STEAM IC 2026"} 
               stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
+            />
+
+            <ProjectCard 
+              name={<FlapRow key={15000} text="EZ-Volunteer Sys" length={19} />}
+              desc={
+                <>
+                  <br />A platform that I designed to centralize the tracking of volunteer hours. At a local organization, hours were maintained through spreadsheets manually.<br /><br />
+                    This increased the chances of human error, data loss, and inconvenient compilation of data. <br /><br /> 
+                    The system aims to solve this problem by providing an automated platform for tracking. <br /><br />
+                    It uses a PostgreSQL database to manage information
+                  <br /><br />
+                  <button 
+                    type="button" 
+                    onClick={() => window.location.href='https://github.com/AbhiramV010/volunteersys-web'}
+                    style={{
+                      background: "#25252a",
+                      color: "#a0a0aa",
+                      border: "2px solid #35353a",
+                      padding: "8px 16px",
+                      cursor: "pointer",
+                      fontFamily: '"Courier New", Courier, monospace',
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      borderRadius: "6px",
+                      width: "fit-content",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#d19a66";
+                      e.currentTarget.style.color = "#f0f0f0";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#35353a";
+                      e.currentTarget.style.color = "#a0a0aa";
+                    }}
+                  >
+                    Source Code
+                  </button>
+                </>
+              } 
+              event={"2025"} 
+              stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
             />
           </div>
         </div>
