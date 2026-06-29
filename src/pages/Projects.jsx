@@ -3,7 +3,7 @@ import { FlapSegment, FlapRow } from '../App';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function ProjectCard({ name, desc, event, stack, gitHubUrl }) {
+function ProjectCard({ name, desc, event, stack, isOnline }) {
   return (
     <div style={{
       background: "#16161c",
@@ -16,7 +16,7 @@ function ProjectCard({ name, desc, event, stack, gitHubUrl }) {
       gap: "16px",
       boxShadow: "0 8px 24px rgba(0,0,0,0.5), inset 0 0 1px rgba(255,255,255,0.05)"
     }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "12px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
         <h3 style={{ 
           color: "#f0f0f0", 
           margin: 0, 
@@ -25,9 +25,6 @@ function ProjectCard({ name, desc, event, stack, gitHubUrl }) {
           letterSpacing: "1px"
         }}>
           {name}
-          <br />
-          <br />
-
         </h3>
         <span style={{ 
           color: "#d19a66", 
@@ -42,45 +39,22 @@ function ProjectCard({ name, desc, event, stack, gitHubUrl }) {
         display: "grid", 
         gridTemplateColumns: "1fr 1px 1fr", 
         gap: "24px", 
-        alignItems: "start", 
+        alignItems: "center", 
         flexGrow: 1 
       }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <p style={{ 
-            color: "#a0a0aa", 
-            margin: 0, 
-            fontSize: "1.4rem", 
-            lineHeight: "1.6",
-            whiteSpace: "pre-line"
-          }}>
-            {desc}
-          </p>
-          <br />
-          <br />
-          {gitHubUrl && (
-            <button 
-              type="button" 
-              onClick={() => window.open(gitHubUrl, '_blank')}
-              style={{
-                background: "#25252a",
-                color: "#a0a0aa",
-                border: "2px solid #35353a",
-                padding: "8px 16px",
-                cursor: "pointer",
-                fontFamily: '"Courier New", Courier, monospace',
-                fontWeight: "bold",
-                fontSize: "1.1rem",
-                borderRadius: "6px",
-                width: "fit-content",
-                alignSelf: "center", 
-              }}
-            >
-              GitHub Repository
-            </button>
-          )}
+        <div style={{ 
+          color: "#a0a0aa", 
+          margin: 0, 
+          fontSize: "1.0rem", 
+          lineHeight: "1.6",
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "left"
+        }}>
+          {desc}
         </div>
 
-        <div style={{ borderLeft: "1px dashed #25252a", height: "100%" }} />
+        <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
           
         <div style={{ width: "100%", aspectRatio: "16/9" }}>
           <iframe
@@ -141,11 +115,11 @@ export default function Projects({ onBack }) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 8rem;
-          height: 3.5rem;
+          width: clamp(18px, 4.5vw, 36px); 
+          height: clamp(30px, 6vw, 50px);
+          font-size: clamp(1rem, 3vw, 1.6rem);
           background: linear-gradient(to bottom, #151518 49%, #000000 51%);
           color: #f0f0f0;
-          font-size: 1.8rem;
           font-weight: bold;
           border-radius: 8px;
           border: 1px solid #25252a;
@@ -219,7 +193,8 @@ export default function Projects({ onBack }) {
             fontWeight: "bold",
             letterSpacing: "4px",
             padding: "0 10px"
-          }} />
+          }}>
+          </div>
           
           <div style={{display: "flex", flexDirection: "column", gap: "16px"}}>
             <FlapRow key={tick} text="My Projects" length={11} />
@@ -228,10 +203,44 @@ export default function Projects({ onBack }) {
           <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
             <ProjectCard 
               name="Iris-Lite" 
-              desc={"A lightweight surveillance prototype built on the Raspberry Pi 4B.\n\nIt uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video.\n\nIt features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline.\n\nTo lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable."} 
-              event="STEAM IC 2026 - Computer Science" 
-              stack={["Raspberry Pi 4B", "ESP32-C3", "Python 3.12.7", "C++"]} 
-              gitHubUrl="https://github.com/AbhiramV010/Iris-Lite"
+              desc={
+                <>
+                  <br />A lightweight surveillance prototype built on the Raspberry Pi 4B.<br /><br />
+                  It uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video. <br /><br />
+                  It features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline. <br /><br />
+                  To lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable.
+                  <br /><br />
+                  <button 
+                    type="button" 
+                    onClick={() => window.location.href='https://example.com'}
+                    style={{
+                      background: "#25252a",
+                      color: "#a0a0aa",
+                      border: "2px solid #35353a",
+                      padding: "8px 16px",
+                      cursor: "pointer",
+                      fontFamily: '"Courier New", Courier, monospace',
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      borderRadius: "6px",
+                      width: "fit-content",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#d19a66";
+                      e.currentTarget.style.color = "#f0f0f0";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#35353a";
+                      e.currentTarget.style.color = "#a0a0aa";
+                    }}
+                  >
+                    Go to Example
+                  </button>
+                </>
+              } 
+              event={"STEAM ICAC 2026 - Computer Science"} 
+              stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
             />
           </div>
         </div>
