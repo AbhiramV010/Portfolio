@@ -265,7 +265,6 @@ export default function Projects({ onBack }) {
                       fontSize: "1.1rem",
                       borderRadius: "6px",
                       width: "fit-content",
-                      transition: "all 0.15s ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor = "#d19a66";
