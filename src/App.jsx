@@ -108,7 +108,7 @@ export default function Home() {
           border-color: #d19a66 !important;
           transform: translateY(-2px);
         }
-      `}</style>
+      `} </style>
 
       <div style={{
         display: "flex",
@@ -131,7 +131,7 @@ export default function Home() {
           width: "100%",
           maxWidth: "750px"
         }}>
-          
+          <br />
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow text={getGreeting()} length={18} speed={20} />
           </div>
@@ -141,11 +141,11 @@ export default function Home() {
           </div>
 
           <div style={{marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px"}}>
-            {/* Kept role mapping intact, but extracted wrapper components can go here later */}
             <FlapRow text="software developer" length={18} /> 
           </div>
+          <br />
         </div>
-
+        
         <nav style={{
           marginTop: "60px",
           display: "flex",
@@ -161,7 +161,7 @@ export default function Home() {
                 if (target === "PROJECTS") {
                   setCurrentView("projects");
                 } else if (target === "ABOUT ME") {
-                  setCurrentView("about"); // Fixed string value case mismatch here
+                  setCurrentView("about"); 
                 }
               }}
               className="nav-flap" 
