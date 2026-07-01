@@ -117,7 +117,7 @@ export default function Home() {
           transition: transform 0.15s ease, border-color 0.15s ease;
         }
         .nav-flap:hover {
-          border-color: #d19a66 !important;
+          border-color: #00ff00 !important;
           transform: translateY(-2px);
         }
       `}</style>
