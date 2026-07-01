@@ -130,8 +130,8 @@ export default function About({ onBack }) {
         }
 
         .timeline-row.active .timeline-indicator {
-          border-color: #ffffff;
-          background: #ffffff;
+          border-color: #00ff00;
+          background: #00ff00;
           box-shadow: 0 0 12px rgba(209, 154, 102, 0.4);
         }
 
@@ -164,7 +164,7 @@ export default function About({ onBack }) {
         }
 
         .read-more-btn:hover {
-          color: #ffffff;
+          color: #00ff00;
         }
       `}</style>      
 
@@ -224,7 +224,7 @@ export default function About({ onBack }) {
                     borderRadius: "6px",
                     padding: "16px"
                   }}>
-                    <div style={{ color: "#ffffff", fontWeight: "bold", fontSize: "0.9rem", marginBottom: "10px" }}>
+                    <div style={{ color: "#00ff00", fontWeight: "bold", fontSize: "0.9rem", marginBottom: "10px" }}>
                       [{group.category}]
                     </div>
                     <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -261,7 +261,7 @@ export default function About({ onBack }) {
                           </span>
                         </div>
                         
-                        <span style={{ color: "#ffffff", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
+                        <span style={{ color: "#00ff00", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
                           {item.subtitle}
                         </span>
 
@@ -277,8 +277,8 @@ export default function About({ onBack }) {
 
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
                         <span style={{ 
-                          border: `1px solid ${item.highlight ? '#ffffff' : '#25252a'}`,
-                          color: item.highlight ? '#ffffff' : '#a0a0aa',
+                          border: `1px solid ${item.highlight ? '#00ff00' : '#25252a'}`,
+                          color: item.highlight ? '#00ff00' : '#a0a0aa',
                           fontSize: "0.65rem",
                           fontWeight: "bold",
                           padding: "2px 8px",

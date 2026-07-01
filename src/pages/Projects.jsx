@@ -27,7 +27,7 @@ function ProjectCard({ name, desc, event, stack, isOnline }) {
           {name}
         </h3>
         <span style={{ 
-          color: "#d19a66", 
+          color: "#00ff00", 
           fontSize: "0.9rem", 
           fontWeight: "bold" 
         }}>
@@ -141,7 +141,7 @@ export default function Projects({ onBack }) {
           transition: transform 0.15s ease, border-color 0.15s ease;
         }
         .nav-flap:hover {
-          border-color: #d19a66 !important;
+          border-color: #00ff00 !important;
           transform: translateY(-2px);
         }
       `}</style>      
@@ -227,7 +227,7 @@ export default function Projects({ onBack }) {
                       transition: "all 0.15s ease",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#d19a66";
+                      e.currentTarget.style.borderColor = "#00ff00";
                       e.currentTarget.style.color = "#f0f0f0";
                     }}
                     onMouseLeave={(e) => {
@@ -267,7 +267,7 @@ export default function Projects({ onBack }) {
                       width: "fit-content",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#d19a66";
+                      e.currentTarget.style.borderColor = "#00ff00";
                       e.currentTarget.style.color = "#f0f0f0";
                     }}
                     onMouseLeave={(e) => {
