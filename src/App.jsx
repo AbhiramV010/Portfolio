@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Projects from "./pages/Projects";
-import About from "./pages/About";
+
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
@@ -47,21 +47,33 @@ export function FlapRow({text, length = 22, speed = 50}) {
 }
 
 export default function Home() {
-  const [currentView, setCurrentView] = useState("home"); 
-
   const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning!";
-    if (hour < 17) return "Good afternoon!";
-    return "Good evening!";
+    const hour = new Date().getHours(); // query system clock for hrs since 0:00
+    
+    if (hour < 12) {
+      return "Good morning!";
+    } else if (hour < 17) {
+      return "Good afternoon!";
+    } else {
+      return "Good evening!";
+    }
   };
 
-  // ROUTING HANDLERS
+  const [role, setRole] = useState("High School Junior");
+  const [currentView, setCurrentView] = useState("home"); 
+
+  useEffect(() => {
+    const roles = ["embedded systems", "software developer", "aircraft", "aspiring engineer"];
+    let i = 0;
+    const interval = setInterval(() => {
+      i = (i + 1) % roles.length;
+      setRole(roles[i]);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, []);
+
   if (currentView === "projects") {
-    return <Projects onBack={() => setCurrentView("home")} />;
-  }
-  if (currentView === "about") {
-    return <About onBack={() => setCurrentView("home")} />;
+  return <Projects onBack={() => setCurrentView("home")} />;
   }
 
   return (
@@ -105,10 +117,10 @@ export default function Home() {
           transition: transform 0.15s ease, border-color 0.15s ease;
         }
         .nav-flap:hover {
-          border-color: #00ff00 !important;
+          border-color: #d19a66 !important;
           transform: translateY(-2px);
         }
-      `} </style>
+      `}</style>
 
       <div style={{
         display: "flex",
@@ -131,7 +143,18 @@ export default function Home() {
           width: "100%",
           maxWidth: "750px"
         }}>
-          <br />
+          
+          <div style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            color: "#55555c", 
+            fontSize: "0.75rem", 
+            fontWeight: "bold",
+            letterSpacing: "4px",
+            padding: "0 10px"
+          }}>
+          </div>
+          
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow text={getGreeting()} length={18} speed={20} />
           </div>
@@ -141,11 +164,12 @@ export default function Home() {
           </div>
 
           <div style={{marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px"}}>
-            <FlapRow text="software developer" length={18} /> 
+            <FlapRow text={role} length={18} />
           </div>
           <br />
+
         </div>
-        
+
         <nav style={{
           marginTop: "60px",
           display: "flex",
@@ -154,16 +178,13 @@ export default function Home() {
           flexWrap: "wrap",
           fontFamily: '"Courier New", Courier, monospace'
         }}>
-          {["PROJECTS","ABOUT ME" ,"CONTACT",].map((target) => (
+          {["PROJECTS", "CONTACT", "ABOUT ME"].map((target) => (
             <button 
               key={target}
               onClick={() => {
                 if (target === "PROJECTS") {
                   setCurrentView("projects");
-                } else if (target === "ABOUT ME") {
-                  setCurrentView("about"); 
-                }
-              }}
+              }}}
               className="nav-flap" 
               style={{
                 display: "inline-flex", 
