@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Projects from "./pages/Projects";
-
+import About from "./pages/About";
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
@@ -72,9 +72,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  if (currentView === "projects") {
-  return <Projects onBack={() => setCurrentView("home")} />;
-  }
+  if (currentView === "projects") {return <Projects onBack={() => setCurrentView("home")} />;}
+  if (currentView === "about") {return <About onBack={() => setCurrentView("home")} />;}
 
   return (
     <>
@@ -178,13 +177,16 @@ export default function Home() {
           flexWrap: "wrap",
           fontFamily: '"Courier New", Courier, monospace'
         }}>
-          {["PROJECTS", "CONTACT", "ABOUT ME"].map((target) => (
+          {["PROJECTS", "ABOUT ME"].map((target) => (
             <button 
               key={target}
               onClick={() => {
                 if (target === "PROJECTS") {
                   setCurrentView("projects");
-              }}}
+                } else if (target === "ABOUT ME") {
+                  setCurrentView("about");
+                }
+            }}
               className="nav-flap" 
               style={{
                 display: "inline-flex", 

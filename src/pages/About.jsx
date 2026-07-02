@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FlapRow } from '../App';
 
-function InfoCard({ title, children }) {
+function InfoCard({ title, children, fw }) {
   return (
     <div style={{
       background: "#16161c",
@@ -22,7 +22,7 @@ function InfoCard({ title, children }) {
         borderBottom: "1px dashed #25252a",
         paddingBottom: "12px"
       }}>
-        {title}
+        {<FlapRow key={1000} text={title} length={fw} />}
       </h3>
       <div style={{ color: "#a0a0aa", fontSize: "1.0rem", lineHeight: "1.6" }}>
         {children}
@@ -48,9 +48,8 @@ export default function About({ onBack }) {
   ];
 
   const timeline = [
-    { date: "PAST", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page site", highlight: false },
-    { date: "PAST", event: "Iris-Lite Development", subtitle: "Lead Programmer", detail: "A timeline for my work/project history", highlight: false },
-    { date: "PAST", event: "EZ-VolunteerSys", subtitle: "Developer", detail: "A timeline for my work/project history", highlight: false }
+    { date: "Sep 2025 - ", event: "STEAM IC - St. Edmund Campion", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: true},
+    { date: "Sep 2025 - Jan 2026", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page", highlight: false},
   ];
 
   return (
@@ -203,15 +202,17 @@ export default function About({ onBack }) {
           
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow key={tick} text="About Me" length={8} />
+            <br />
           </div>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
             
-            <InfoCard title="Overview">
+            <InfoCard title="Overview" fw={8}>
               A box saying who I am
             </InfoCard>
 
-            <InfoCard title="Technical Frameworks & Skills">
+            <InfoCard title="My Developer Stack" fw = {18}>
+
               <div style={{ 
                 display: "grid", 
                 gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", 
@@ -246,7 +247,7 @@ export default function About({ onBack }) {
               </div>
             </InfoCard>
 
-            <InfoCard title="History & Milestones">
+            <InfoCard title="Experience" fw={10}>
               <div className="timeline-wrapper">
                 <div className="timeline-axis" />
                 {timeline.map((item, index) => (
