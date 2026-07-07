@@ -41,14 +41,13 @@ export default function About({ onBack }) {
   }, []);
 
   const skillGroups = [
-    { category: "Languages", items: ["Java", "Python", "C", "C++", "JavaScript", "SQL"] },
-    { category: "Frontend", items: ["React.js", "Vite", "Tailwind CSS", "HTML5", "CSS3", "Swing GUI"] },
-    { category: "Backend/DB", items: ["Node.js", "FastAPI", "PostgreSQL", "REST APIs", "Linux Shell", "Git"] },
-    { category: "Hardware/Embedded", items: ["KiCad", "PCB Design", "ESP32-C3", "ATmega328P", "Raspberry Pi", "Firmware"] }
+    { category: "Frontend", items: ["React.js", "HTML", "CSS", "Java Swing", "CustomTkinter"] },
+    { category: "Backend", items: ["Python 3", "Node.js", "FastAPI", "PostgreSQL", "Java 21"]},
+    { category: "Hardware", items: ["KiCad", "AVR/C", "Arduino", "Raspberry Pi"]}
   ];
 
   const timeline = [
-    { date: "Sep 2025 - ", event: "STEAM IC - St. Edmund Campion", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: true},
+    { date: "Sep 2025 - Present", event: "Campion STEAM IC", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: true},
     { date: "Sep 2025 - Jan 2026", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page", highlight: false},
   ];
 
@@ -208,7 +207,9 @@ export default function About({ onBack }) {
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
             
             <InfoCard title="Overview" fw={8}>
-              A box saying who I am
+              I am a developer and aspiring electrical engineer. 
+              I build custom circuit boards, write low-level code,
+              and design software solutions to solve complex physical problems.
             </InfoCard>
 
             <InfoCard title="My Developer Stack" fw = {18}>
