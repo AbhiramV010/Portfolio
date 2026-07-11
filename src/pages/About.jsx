@@ -47,7 +47,8 @@ export default function About({ onBack }) {
   ];
 
   const timeline = [
-    { date: "Sep 2025 - Present", event: "Campion STEAM IC", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: true},
+      { date: "Jul 2026 - Present", event: "ZRA Labs", subtitle: "As a summer intern, I was tasked with creating a Computer-Vision Model that identifies different railway-related objects. It will operate as a prototype for ZRA's future demonstrations and product.", highlight: true},
+    { date: "Sep 2025 - Jun 2026", event: "Campion STEAM IC", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: false},
     { date: "Sep 2025 - Jan 2026", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page", highlight: false},
   ];
 
