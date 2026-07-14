@@ -3,7 +3,7 @@ import { FlapSegment, FlapRow } from '../App';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function ProjectCard({ name, desc, event, stack, isOnline }) {
+function ProjectCard({ name, desc, event, stack, isOnline, vLink }) {
   return (
     <div style={{
       background: "#16161c",
@@ -59,7 +59,7 @@ function ProjectCard({ name, desc, event, stack, isOnline }) {
         <div style={{ width: "100%", aspectRatio: "16/9" }}>
           <iframe
             style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
-            src="https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"
+            src={vLink}
             title={name}
             allowFullScreen
           />
@@ -202,6 +202,47 @@ export default function Projects({ onBack }) {
           
           <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
             <ProjectCard 
+              name={<FlapRow key={15000} text="Halo Assistant" length={14} />}
+              desc={
+                <>
+                  <br />An ElectronJS application that I designed for JecHacks 2026, to act as an AI assistant that teaches anything.<br /><br />
+                    It achieves this by drawing over the user's screen at 60FPS using a canvas overlay. <br /><br /> 
+                    It draws numbers, text, & diagrams to explain the user anything. Halo can even move the user's mouse to perform actions for them. 
+                  <br /><br />
+                  <button 
+                    type="button" 
+                    onClick={() => window.location.href='https://github.com/AbhiramV010/Halo_JecHacks26'}
+                    style={{
+                      background: "#25252a",
+                      color: "#a0a0aa",
+                      border: "2px solid #35353a",
+                      padding: "8px 16px",
+                      cursor: "pointer",
+                      fontFamily: '"Courier New", Courier, monospace',
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      borderRadius: "6px",
+                      width: "fit-content",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#00ff00";
+                      e.currentTarget.style.color = "#f0f0f0";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#35353a";
+                      e.currentTarget.style.color = "#a0a0aa";
+                    }}
+                  >
+                    Source Code
+                  </button>
+                </>
+              } 
+              event={"JecHacks 2026"} 
+              vLink={"https://www.youtube.com/watch?v=nmboKJn2uPU"}
+              stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT"]}
+            />
+
+            <ProjectCard 
               name={<FlapRow key={15000} text="Iris-Lite" length={9} />}
               desc={
                 <>
@@ -240,6 +281,7 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"STEAM IC 2026"} 
+              vLink={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
               stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
             />
 
@@ -280,6 +322,7 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"2025"} 
+              vLink={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
               stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
             />
           </div>
