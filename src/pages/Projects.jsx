@@ -238,7 +238,7 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"JecHacks 2026"} 
-              vLink={"https://www.youtube.com/watch?v=nmboKJn2uPU"}
+              vLink={"https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"}
               stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT"]}
             />
 
