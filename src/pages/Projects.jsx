@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
 import { FlapSegment, FlapRow } from '../App';
 import irisPdf from '../assets/iris_lite.pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
@@ -68,15 +63,23 @@ function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }
           overflow: "hidden", 
           borderRadius: "4px", 
           border: "1px solid #25252a",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "#000"
+          position: "relative",
+          background: "#0d0d11"
         }}>
           {mediaType === "pdf" ? (
-            <Document file={mediaSrc} loading={<span style={{ color: "#a0a0aa" }}>Loading PDF...</span>}>
-              <Page pageNumber={1} width={320} renderTextLayer={false} renderAnnotationLayer={false} />
-            </Document>
+            <iframe
+              src={`${mediaSrc}#view=FitH`}
+              title={typeof name === "string" ? name : "PDF Preview"}
+              style={{
+                position: "absolute",
+                top: "-52px",
+                left: "0",
+                width: "100%",
+                height: "calc(100% + 52px)",
+                border: "none",
+                pointerEvents: "none"
+              }}
+            />
           ) : (
             <iframe
               style={{ width: "100%", height: "100%", border: "none" }}
