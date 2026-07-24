@@ -1,93 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { FlapSegment, FlapRow } from '../App';
 import irisPdf from '../assets/iris_lite.pdf';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
-
-function PdfCanvasPreview({ pdfUrl }) {
-  const canvasRef = useRef(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadPdf = async () => {
-      try {
-        if (!window.pdfjsLib) {
-          await new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-          });
-          window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        }
-
-        const loadingTask = window.pdfjsLib.getDocument(pdfUrl);
-        const pdf = await loadingTask.promise;
-        const page = await pdf.getPage(1);
-
-        if (!isMounted || !canvasRef.current) return;
-
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        const viewport = page.getViewport({ scale: 1.5 });
-
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        await page.render({
-          canvasContext: context,
-          viewport: viewport,
-        }).promise;
-
-        if (isMounted) setLoading(false);
-      } catch (err) {
-        if (isMounted) {
-          setError(true);
-          setLoading(false);
-        }
-      }
-    };
-
-    loadPdf();
-    return () => { isMounted = false; };
-  }, [pdfUrl]);
-
-  if (error) {
-    return (
-      <div style={{ color: "#a0a0aa", fontSize: "0.85rem", padding: "10px" }}>
-        Failed to render PDF preview.
-      </div>
-    );
-  }
-
-  return (
-    <div style={{
-      width: "100%",
-      height: "100%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "relative",
-      overflow: "hidden"
-    }}>
-      {loading && <span style={{ color: "#a0a0aa", fontSize: "0.85rem" }}>Loading preview...</span>}
-      <canvas
-        ref={canvasRef}
-        style={{
-          maxWidth: "100%",
-          maxHeight: "100%",
-          objectFit: "contain",
-          display: loading ? "none" : "block"
-        }}
-      />
-    </div>
-  );
-}
 
 function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }) {
   return (
@@ -149,20 +64,15 @@ function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }
           borderRadius: "4px", 
           border: "1px solid #25252a",
           background: "#0d0d11",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
+          position: "relative"
         }}>
-          {mediaType === "pdf" ? (
-            <PdfCanvasPreview pdfUrl={mediaSrc} />
-          ) : (
-            <iframe
-              style={{ width: "100%", height: "100%", border: "none" }}
-              src={mediaSrc}
-              title={typeof name === "string" ? name : "Project Media"}
-              allowFullScreen
-            />
-          )}
+          <iframe
+            src={mediaSrc}
+            style={{ width: "100%", height: "100%", border: "none" }}
+            title={typeof name === "string" ? name : "Project Media"}
+            allowFullScreen
+            allow="autoplay"
+          />
         </div>
       </div>
 
@@ -383,7 +293,7 @@ export default function Projects({ onBack }) {
               } 
               event={"STEAM IC 2026"} 
               mediaType="pdf"
-              mediaSrc={irisPdf}
+              mediaSrc="https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview"
               stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
             />
 
