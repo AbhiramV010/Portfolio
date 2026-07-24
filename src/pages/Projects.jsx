@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { FlapSegment, FlapRow } from '../App';
+import irisPdf from '../assets/iris_lite.pdf';
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
-function ProjectCard({ name, desc, event, stack, isOnline, vLink }) {
+function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }) {
   return (
     <div style={{
       background: "#16161c",
@@ -57,12 +58,24 @@ function ProjectCard({ name, desc, event, stack, isOnline, vLink }) {
         <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
           
         <div style={{ width: "100%", aspectRatio: "16/9" }}>
-          <iframe
-            style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
-            src={vLink}
-            title={name}
-            allowFullScreen
-          />
+          {mediaType === "pdf" ? (
+            <object
+              data={mediaSrc}
+              type="application/pdf"
+              style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
+            >
+              <p style={{ color: "#a0a0aa", fontSize: "0.85rem", padding: "10px" }}>
+                PDF preview unavailable. <a href={mediaSrc} target="_blank" rel="noreferrer" style={{ color: "#00ff00" }}>Download PDF</a>
+              </p>
+            </object>
+          ) : (
+            <iframe
+              style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
+              src={mediaSrc}
+              title={typeof name === "string" ? name : "Project Media"}
+              allowFullScreen
+            />
+          )}
         </div>
       </div>
 
@@ -238,7 +251,8 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"JecHacks 2026"} 
-              vLink={"https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"}
+              mediaType="video"
+              mediaSrc={"https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"}
               stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT","nut-js"]}
             />
 
@@ -281,7 +295,8 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"STEAM IC 2026"} 
-              vLink={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
+              mediaType="pdf"
+              mediaSrc={irisPdf}
               stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
             />
 
@@ -322,7 +337,8 @@ export default function Projects({ onBack }) {
                 </>
               } 
               event={"2025"} 
-              vLink={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
+              mediaType="video"
+              mediaSrc={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
               stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
             />
           </div>
