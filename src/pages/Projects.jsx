@@ -5,6 +5,11 @@ import irisPdf from '../assets/iris_lite.pdf';
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
 function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }) {
+  const formattedMediaSrc =
+    mediaType === "pdf"
+      ? `${mediaSrc}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`
+      : mediaSrc;
+
   return (
     <div style={{
       background: "#16161c",
@@ -57,20 +62,16 @@ function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }
 
         <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
           
-        <div style={{ width: "100%", aspectRatio: "16/9" }}>
+        <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: "4px", border: "1px solid #25252a" }}>
           {mediaType === "pdf" ? (
-            <object
-              data={mediaSrc}
-              type="application/pdf"
-              style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
-            >
-              <p style={{ color: "#a0a0aa", fontSize: "0.85rem", padding: "10px" }}>
-                PDF preview unavailable. <a href={mediaSrc} target="_blank" rel="noreferrer" style={{ color: "#00ff00" }}>Download PDF</a>
-              </p>
-            </object>
+            <iframe
+              src={formattedMediaSrc}
+              title={typeof name === "string" ? name : "PDF Preview"}
+              style={{ width: "100%", height: "100%", border: "none" }}
+            />
           ) : (
             <iframe
-              style={{ width: "100%", height: "100%", borderRadius: "4px", border: "1px solid #25252a" }}
+              style={{ width: "100%", height: "100%", border: "none" }}
               src={mediaSrc}
               title={typeof name === "string" ? name : "Project Media"}
               allowFullScreen
