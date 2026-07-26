@@ -215,7 +215,7 @@ export default function Projects({ onBack }) {
               desc={
                 <>
                   <p>
-                    An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for preset angle cycling.<br /><br />
+                    An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views.<br /><br />
                     Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection.<br /><br />
                     Features a Streamlit interface with manual slider controls for precise motor and angle adjustments.
                   </p>
