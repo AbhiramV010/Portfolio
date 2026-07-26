@@ -210,6 +210,49 @@ export default function Projects({ onBack }) {
             <FlapRow key={tick} text="My Projects" length={11} />
           </div>
           
+          <ProjectCard 
+              name={<FlapRow key={15000} text="Autovision" length={10} />}
+              desc={
+                <>
+                  <p>
+                    An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for preset angle cycling.<br /><br />
+                    Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection.<br /><br />
+                    Features a Streamlit interface with manual slider controls for precise motor and angle adjustments.
+                  </p>
+                  <button 
+                    type="button" 
+                    onClick={() => window.location.href='https://github.com/AbhiramV010/HTVHackDay26'}
+                    style={{
+                      background: "#25252a",
+                      color: "#a0a0aa",
+                      border: "2px solid #35353a",
+                      padding: "8px 16px",
+                      cursor: "pointer",
+                      fontFamily: '"Courier New", Courier, monospace',
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      borderRadius: "6px",
+                      width: "fit-content",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#00ff00";
+                      e.currentTarget.style.color = "#f0f0f0";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#35353a";
+                      e.currentTarget.style.color = "#a0a0aa";
+                    }}
+                  >
+                    Source Code
+                  </button>
+                </>
+              } 
+              event={"3RD PLACE - 2026"} 
+              mediaType="video"
+              mediaSrc={"https://www.youtube.com/embed/ZIxitVLnJJA"}
+              stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
+          />
+
           <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
             <ProjectCard 
               name={<FlapRow key={15000} text="Halo Assistant" length={14} />}
@@ -247,7 +290,7 @@ export default function Projects({ onBack }) {
                   </button>
                 </>
               } 
-              event={"JecHacks 2026"} 
+              event={"JecHacks 2026 - 2nd Place"} 
               mediaType="video"
               mediaSrc={"https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"}
               stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT","nut-js"]}
