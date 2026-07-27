@@ -249,7 +249,7 @@ export default function Projects({ onBack }) {
               } 
               event={"3RD PLACE - 2026"} 
               mediaType="video"
-              mediaSrc={"https://www.youtube.com/embed/ZIxitVLnJJA"}
+              mediaSrc={"https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl"}
               stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
           />
 
