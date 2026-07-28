@@ -1,10 +1,37 @@
 import { useState, useEffect } from 'react';
-import { FlapSegment, FlapRow } from '../App';
-import irisPdf from '../assets/iris_lite.pdf';
+import { FlapRow } from '../App';
 
-const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
+function LinkButton({ label, href }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        background: "#25252a",
+        color: hover ? "#f0f0f0" : "#a0a0aa",
+        border: `2px solid ${hover ? "#00ff00" : "#35353a"}`,
+        padding: "8px 16px",
+        cursor: "pointer",
+        fontFamily: '"Courier New", Courier, monospace',
+        fontWeight: "bold",
+        fontSize: "1.1rem",
+        borderRadius: "6px",
+        width: "fit-content",
+        textDecoration: "none",
+        display: "inline-block",
+        transition: "all 0.15s ease"
+      }}
+    >
+      {label}
+    </a>
+  );
+}
 
-function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }) {
+function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
   return (
     <div style={{
       background: "#16161c",
@@ -50,9 +77,18 @@ function ProjectCard({ name, desc, event, stack, mediaType = "video", mediaSrc }
           lineHeight: "1.6",
           display: "flex",
           flexDirection: "column",
+          gap: "16px",
           textAlign: "left"
         }}>
-          {desc}
+          <div>{desc}</div>
+          
+          {actions.length > 0 && (
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "8px" }}>
+              {actions.map((act, i) => (
+                <LinkButton key={i} label={act.label} href={act.href} />
+              ))}
+            </div>
+          )}
         </div>
 
         <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
@@ -120,7 +156,7 @@ export default function Projects({ onBack }) {
           font-family: "Courier New", Courier, monospace;
           overflow-x: hidden;
         }
-        
+
         .flap-cell {
           display: inline-flex;
           align-items: center;
@@ -156,13 +192,7 @@ export default function Projects({ onBack }) {
         }
       `}</style>      
 
-      <div style={{
-        width: "100%",
-        minHeight: "100vh",
-        boxSizing: "border-box",
-        padding: "24px"
-      }}>
-        
+      <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
         <div style={{
           background: "#111115",
           padding: "30px",
@@ -192,194 +222,58 @@ export default function Projects({ onBack }) {
               alignSelf: "flex-start",
               borderRadius: "8px"                   
             }}
-          > BACK
+          > 
+            BACK
           </button>
           
-          <div style={{ 
-            display: "flex", 
-            justifyContent: "space-between", 
-            color: "#55555c", 
-            fontSize: "0.75rem", 
-            fontWeight: "bold",
-            letterSpacing: "4px",
-            padding: "0 10px"
-          }}>
-          </div>
-          
-          <div style={{display: "flex", flexDirection: "column", gap: "16px"}}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow key={tick} text="My Projects" length={11} />
           </div>
           
-          <ProjectCard 
-              name={<FlapRow key={15000} text="Autovision" length={10} />}
-              desc={
-                <>
-                  <p>
-                    An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views.<br /><br />
-                    Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection.<br /><br />
-                    Features a Streamlit interface with manual slider controls for precise motor and angle adjustments.
-                  </p>
-                  <button 
-                    type="button" 
-                    onClick={() => window.location.href='https://github.com/AbhiramV010/HTVHackDay26'}
-                    style={{
-                      background: "#25252a",
-                      color: "#a0a0aa",
-                      border: "2px solid #35353a",
-                      padding: "8px 16px",
-                      cursor: "pointer",
-                      fontFamily: '"Courier New", Courier, monospace',
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      borderRadius: "6px",
-                      width: "fit-content",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#00ff00";
-                      e.currentTarget.style.color = "#f0f0f0";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "#35353a";
-                      e.currentTarget.style.color = "#a0a0aa";
-                    }}
-                  >
-                    Source Code
-                  </button>
-                </>
-              } 
-              event={"3RD PLACE - 2026"} 
-              mediaType="video"
-              mediaSrc={"https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl"}
-              stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
-          />
-
-          <div style={{display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start"}}> 
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start" }}>
             <ProjectCard 
-              name={<FlapRow key={15000} text="Halo Assistant" length={14} />}
-              desc={
-                <>
-                  <br />An ElectronJS application that I designed for JecHacks 2026, to act as an AI assistant that teaches anything.<br /><br />
-                    It achieves this by drawing over the user's screen at 60FPS using a canvas overlay. <br /><br /> 
-                    It draws numbers, text, & diagrams to explain the user anything. Halo can even move the user's mouse to perform actions for them. 
-                  <br /><br />
-                  <button 
-                    type="button" 
-                    onClick={() => window.location.href='https://github.com/AbhiramV010/Halo_JecHacks26'}
-                    style={{
-                      background: "#25252a",
-                      color: "#a0a0aa",
-                      border: "2px solid #35353a",
-                      padding: "8px 16px",
-                      cursor: "pointer",
-                      fontFamily: '"Courier New", Courier, monospace',
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      borderRadius: "6px",
-                      width: "fit-content",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#00ff00";
-                      e.currentTarget.style.color = "#f0f0f0";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "#35353a";
-                      e.currentTarget.style.color = "#a0a0aa";
-                    }}
-                  >
-                    Source Code
-                  </button>
-                </>
-              } 
-              event={"JecHacks 2026 - 2nd Place"} 
-              mediaType="video"
-              mediaSrc={"https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"}
-              stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT","nut-js"]}
+              name={<FlapRow key="autovision" text="Autovision" length={10} />}
+              desc="An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views. Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection. Features a Streamlit interface with manual slider controls for precise motor and angle adjustments."
+              event="3RD PLACE - 2026" 
+              mediaSrc="https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl"
+              stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
+              actions={[
+                { label: "Source Code", href: "https://github.com/AbhiramV010/HTVHackDay26" }
+              ]}
             />
 
             <ProjectCard 
-              name={<FlapRow key={15000} text="Iris-Lite" length={9} />}
-              desc={
-                <>
-                  <br />A lightweight surveillance prototype built on the Raspberry Pi 4B.<br /><br />
-                  It uses a set of Python scripts for event detection, and an intelligent compression software (PELICAN) to compress video. <br /><br />
-                  It features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline. <br /><br />
-                  To lower the environmental footprint, I designed a carbon-aware circuit, which charges an onboard circuit only when power is renewable.
-                  <br /><br />
-                  <button 
-                    type="button" 
-                    onClick={() => window.location.href='https://github.com/AbhiramV010/Iris-Lite'}
-                    style={{
-                      background: "#25252a",
-                      color: "#a0a0aa",
-                      border: "2px solid #35353a",
-                      padding: "8px 16px",
-                      cursor: "pointer",
-                      fontFamily: '"Courier New", Courier, monospace',
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      borderRadius: "6px",
-                      width: "fit-content",
-                      transition: "all 0.15s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#00ff00";
-                      e.currentTarget.style.color = "#f0f0f0";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "#35353a";
-                      e.currentTarget.style.color = "#a0a0aa";
-                    }}
-                  >
-                    Source Code
-                  </button>
-                </>
-              } 
-              event={"STEAM IC 2026"} 
-              mediaType="pdf"
+              name={<FlapRow key="halo" text="Halo Assistant" length={14} />}
+              desc="An ElectronJS application designed for JecHacks 2026 to act as an AI assistant that teaches anything. It achieves this by drawing over the user's screen at 60FPS using a canvas overlay (numbers, text, & diagrams). Halo can even move the user's mouse to perform actions for them."
+              event="JecHacks 2026 - 2nd Place" 
+              mediaSrc="https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"
+              stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT", "nut-js"]}
+              actions={[
+                { label: "Source Code", href: "https://github.com/AbhiramV010/Halo_JecHacks26" }
+              ]}
+            />
+
+            <ProjectCard 
+              name={<FlapRow key="iris" text="Iris-Lite" length={9} />}
+              desc="A lightweight surveillance prototype built on the Raspberry Pi 4B. Uses a set of Python scripts for event detection and PELICAN compression software. Features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline, backed by a carbon-aware charging circuit."
+              event="STEAM IC 2026" 
               mediaSrc="https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview"
               stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
+              actions={[
+                { label: "Source Code", href: "https://github.com/AbhiramV010/Iris-Lite" },
+                { label: "Website", href: "https://abhiramv010.github.io/Iris_Lite/" }
+              ]}
             />
 
             <ProjectCard 
-              name={<FlapRow key={15000} text="EZ-Volunteer Sys" length={16} />}
-              desc={
-                <>
-                  <br />A platform that I designed to centralize the tracking of volunteer hours. At a local organization, hours were maintained through spreadsheets manually.<br /><br />
-                    This increased the chances of human error, data loss, and inconvenient compilation of data. <br /><br /> 
-                    The system aims to solve this problem by providing a platform for data storage.
-                  <br /><br />
-                  <button 
-                    type="button" 
-                    onClick={() => window.location.href='https://github.com/AbhiramV010/volunteersys-web'}
-                    style={{
-                      background: "#25252a",
-                      color: "#a0a0aa",
-                      border: "2px solid #35353a",
-                      padding: "8px 16px",
-                      cursor: "pointer",
-                      fontFamily: '"Courier New", Courier, monospace',
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      borderRadius: "6px",
-                      width: "fit-content",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#00ff00";
-                      e.currentTarget.style.color = "#f0f0f0";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "#35353a";
-                      e.currentTarget.style.color = "#a0a0aa";
-                    }}
-                  >
-                    Source Code
-                  </button>
-                </>
-              } 
-              event={"2025"} 
-              mediaType="video"
-              mediaSrc={"https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"}
+              name={<FlapRow key="ez-volunteer" text="EZ-Volunteer Sys" length={16} />}
+              desc="A platform designed to centralize the tracking of volunteer hours to replace error-prone manual spreadsheet tracking at a local organization."
+              event="2025" 
+              mediaSrc="https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"
               stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
+              actions={[
+                { label: "Source Code", href: "https://github.com/AbhiramV010/volunteersys-web" }
+              ]}
             />
           </div>
         </div>
