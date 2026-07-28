@@ -22,7 +22,7 @@ function InfoCard({ title, children, fw }) {
         borderBottom: "1px dashed #25252a",
         paddingBottom: "12px"
       }}>
-        <FlapRow key={title} text={title} length={fw} />
+        <FlapRow key={1000} text={title} length={fw} />
       </h3>
       <div style={{ color: "#a0a0aa", fontSize: "1.0rem", lineHeight: "1.6" }}>
         {children}
@@ -33,7 +33,7 @@ function InfoCard({ title, children, fw }) {
 
 export default function About({ onBack }) {
   const [tick, setTick] = useState(0);
-  const [expandedIndices, setExpandedIndices] = useState({});
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => setTick(t => t + 1), 7500);
@@ -50,22 +50,21 @@ export default function About({ onBack }) {
     { 
       date: "Jul 2026 - Present", 
       event: "ZRA Labs", 
-      subtitle: "Computer Vision Intern", 
-      detail: "Creating a Computer-Vision Model that identifies railway-related objects. Operates as a prototype for ZRA's future product demonstrations.",
+      subtitle: "As a summer intern, I was tasked with creating a Computer-Vision Model that identifies different railway-related objects. It will operate as a prototype for ZRA's future demonstrations and product.", 
       highlight: true 
     },
     { 
       date: "Sep 2025 - Jun 2026", 
       event: "Campion STEAM IC", 
       subtitle: "Chapter Executive & Participant", 
-      detail: "Guided students in building projects under the Computer Science event. Built Iris-Lite for 2026.", 
+      detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", 
       highlight: false 
     },
     { 
       date: "Sep 2025 - Jan 2026", 
       event: "Brampton FBLC, JEC & TA", 
       subtitle: "Systems Executive", 
-      detail: "Worked with a team of programmers to design the organization's landing page.", 
+      detail: "Worked with a team of programmers to design the organization's landing page", 
       highlight: false 
     }
   ];
@@ -92,7 +91,7 @@ export default function About({ onBack }) {
   ];
 
   const toggleExpand = (index) => {
-    setExpandedIndices(prev => ({ ...prev, [index]: !prev[index] }));
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
 
   return (
@@ -106,6 +105,32 @@ export default function About({ onBack }) {
           overflow-x: hidden;
         }
         
+        .flap-cell {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: clamp(18px, 4.5vw, 36px); 
+          height: clamp(30px, 6vw, 50px);
+          font-size: clamp(1rem, 3vw, 1.6rem);
+          background: linear-gradient(to bottom, #151518 49%, #000000 51%);
+          color: #f0f0f0;
+          font-weight: bold;
+          border-radius: 8px;
+          border: 1px solid #25252a;
+          box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);
+          position: relative;
+        }
+
+        .flap-cell::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: rgba(0, 0, 0, 0.7);
+        }
+
         .timeline-wrapper {
           display: flex;
           position: relative;
@@ -126,14 +151,13 @@ export default function About({ onBack }) {
         .timeline-row {
           display: flex;
           position: relative;
-          align-items: flex-start;
+          align-items: center;
           width: 100%;
         }
 
         .timeline-indicator {
           position: absolute;
           left: -32px;
-          top: 24px;
           width: 22px;
           height: 22px;
           border-radius: 50%;
@@ -141,6 +165,9 @@ export default function About({ onBack }) {
           border: 2px solid #25252a;
           box-sizing: border-box;
           z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .timeline-row.active .timeline-indicator {
@@ -156,17 +183,9 @@ export default function About({ onBack }) {
           border-radius: 6px;
           padding: 24px;
           display: flex;
-          flex-direction: column;
-          gap: 12px;
-          box-sizing: border-box;
-        }
-
-        .timeline-header {
-          display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          gap: 12px;
-          flex-wrap: wrap;
+          box-sizing: border-box;
         }
 
         .read-more-btn {
@@ -179,29 +198,16 @@ export default function About({ onBack }) {
           letter-spacing: 1px;
           cursor: pointer;
           padding: 0;
-          margin-top: 8px;
+          margin-top: 16px;
           display: inline-flex;
           align-items: center;
           transition: color 0.15s ease;
-          align-self: flex-start;
         }
 
         .read-more-btn:hover {
           color: #00ff00;
         }
-
-        .detail-box {
-          color: #b0b0b8;
-          font-size: 0.85rem;
-          font-family: "Courier New", Courier, monospace;
-          background: #1c1c24;
-          padding: 12px;
-          border-radius: 4px;
-          border: 1px solid #282830;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-          line-height: 1.5;
-        }
-      `}</style>    
+      `}</style>     
 
       <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
         <div style={{
@@ -231,7 +237,7 @@ export default function About({ onBack }) {
               fontSize: 20,                        
               width: "fit-content",                 
               alignSelf: "flex-start",
-              borderRadius: "8px"                   
+              borderRadius: "8px"                    
             }}
           > 
             BACK
@@ -239,9 +245,11 @@ export default function About({ onBack }) {
           
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow key={tick} text="About Me" length={8} />
+            <br />
           </div>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            
             <InfoCard title="Overview" fw={8}>
               I am a developer and aspiring electrical engineer. 
               I build custom circuit boards, write low-level code,
@@ -291,16 +299,29 @@ export default function About({ onBack }) {
                     <div className="timeline-indicator" />
                     
                     <div className="timeline-card">
-                      <div className="timeline-header">
-                        <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
                           <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "1.2rem" }}>
                             {item.event}
                           </span>
-                          <span style={{ color: "#00ff00", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
-                            {item.subtitle}
-                          </span>
                         </div>
+                        
+                        <span style={{ color: "#00ff00", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
+                          {item.subtitle}
+                        </span>
 
+                        {item.detail && (
+                          <button 
+                            type="button" 
+                            className="read-more-btn"
+                            onClick={() => toggleExpand(index)}
+                          >
+                            {expandedIndex === index ? "READ LESS -" : "READ MORE +"}
+                          </button>
+                        )}
+                      </div>
+
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
                         <span style={{ 
                           border: `1px solid ${item.highlight ? '#00ff00' : '#25252a'}`,
                           color: item.highlight ? '#00ff00' : '#a0a0aa',
@@ -312,25 +333,24 @@ export default function About({ onBack }) {
                         }}>
                           {item.date}
                         </span>
+                        
+                        {expandedIndex === index && item.detail && (
+                          <span style={{ 
+                            color: "#b0b0b8", 
+                            fontSize: "0.85rem", 
+                            fontFamily: '"Courier New", Courier, monospace',
+                            marginTop: "6px",
+                            textAlign: "right",
+                            background: "#1c1c24",
+                            padding: "8px 12px",
+                            borderRadius: "4px",
+                            border: "1px solid #282830",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
+                          }}>
+                            {item.detail}
+                          </span>
+                        )}
                       </div>
-
-                      {item.detail && (
-                        <>
-                          <button 
-                            type="button" 
-                            className="read-more-btn"
-                            onClick={() => toggleExpand(index)}
-                          >
-                            {expandedIndices[index] ? "READ LESS -" : "READ MORE +"}
-                          </button>
-
-                          {expandedIndices[index] && (
-                            <div className="detail-box">
-                              {item.detail}
-                            </div>
-                          )}
-                        </>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -387,5 +407,4 @@ export default function About({ onBack }) {
         </div>
       </div>
     </>
-  );
-}
+  )
