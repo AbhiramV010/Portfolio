@@ -407,4 +407,5 @@ export default function About({ onBack }) {
         </div>
       </div>
     </>
-  )
+  );
+}
