@@ -22,7 +22,7 @@ function InfoCard({ title, children, fw }) {
         borderBottom: "1px dashed #25252a",
         paddingBottom: "12px"
       }}>
-        <FlapRow key={1000} text={title} length={fw} />
+        {<FlapRow key={1000} text={title} length={fw} />}
       </h3>
       <div style={{ color: "#a0a0aa", fontSize: "1.0rem", lineHeight: "1.6" }}>
         {children}
@@ -33,7 +33,7 @@ function InfoCard({ title, children, fw }) {
 
 export default function About({ onBack }) {
   const [tick, setTick] = useState(0);
-  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => setTick(t => t + 1), 7500);
@@ -42,57 +42,15 @@ export default function About({ onBack }) {
 
   const skillGroups = [
     { category: "Frontend", items: ["React.js", "HTML", "CSS", "Java Swing", "CustomTkinter"] },
-    { category: "Backend", items: ["Python 3", "Node.js", "FastAPI", "PostgreSQL", "Java 21"] },
-    { category: "Hardware", items: ["KiCad", "AVR/C", "Arduino", "Raspberry Pi"] }
+    { category: "Backend", items: ["Python 3", "Node.js", "FastAPI", "PostgreSQL", "Java 21"]},
+    { category: "Hardware", items: ["KiCad", "AVR/C", "Arduino", "Raspberry Pi"]}
   ];
 
   const timeline = [
-    { 
-      date: "Jul 2026 - Present", 
-      event: "ZRA Labs", 
-      subtitle: "As a summer intern, I was tasked with creating a Computer-Vision Model that identifies different railway-related objects. It will operate as a prototype for ZRA's future demonstrations and product.", 
-      highlight: true 
-    },
-    { 
-      date: "Sep 2025 - Jun 2026", 
-      event: "Campion STEAM IC", 
-      subtitle: "Chapter Executive & Participant", 
-      detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", 
-      highlight: false 
-    },
-    { 
-      date: "Sep 2025 - Jan 2026", 
-      event: "Brampton FBLC, JEC & TA", 
-      subtitle: "Systems Executive", 
-      detail: "Worked with a team of programmers to design the organization's landing page", 
-      highlight: false 
-    }
+      { date: "Jul 2026 - Present", event: "ZRA Labs", subtitle: "As a summer intern, I was tasked with creating a Computer-Vision Model that identifies different railway-related objects. It will operate as a prototype for ZRA's future demonstrations and product.", highlight: true},
+    { date: "Sep 2025 - Jun 2026", event: "Campion STEAM IC", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: false},
+    { date: "Sep 2025 - Jan 2026", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page", highlight: false},
   ];
-
-  const certifications = [
-    {
-      title: "PCEP-30-02 Certified Entry-Level Python Programmer",
-      issuer: "Python Institute",
-      date: "Oct 2024",
-      credentialId: "71uV.9zuA.WXnV"
-    },
-    {
-      title: "Python for Data Science 101",
-      issuer: "IBM",
-      date: "Jan 2022",
-      credentialId: "01a86e73e11042a88346082fd3b48ee9"
-    },
-    {
-      title: "PCB Design with KiCad",
-      issuer: "Dr. Peter Dalmaris",
-      date: "In Progress",
-      credentialId: null
-    }
-  ];
-
-  const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
 
   return (
     <>
@@ -173,7 +131,7 @@ export default function About({ onBack }) {
         .timeline-row.active .timeline-indicator {
           border-color: #00ff00;
           background: #00ff00;
-          box-shadow: 0 0 12px rgba(0, 255, 0, 0.4);
+          box-shadow: 0 0 12px rgba(209, 154, 102, 0.4);
         }
 
         .timeline-card {
@@ -207,7 +165,7 @@ export default function About({ onBack }) {
         .read-more-btn:hover {
           color: #00ff00;
         }
-      `}</style>     
+      `}</style>      
 
       <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
         <div style={{
@@ -237,10 +195,9 @@ export default function About({ onBack }) {
               fontSize: 20,                        
               width: "fit-content",                 
               alignSelf: "flex-start",
-              borderRadius: "8px"                    
+              borderRadius: "8px"                   
             }}
-          > 
-            BACK
+          > BACK
           </button>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -256,7 +213,8 @@ export default function About({ onBack }) {
               and design software solutions to solve complex physical problems.
             </InfoCard>
 
-            <InfoCard title="My Developer Stack" fw={18}>
+            <InfoCard title="My Developer Stack" fw = {18}>
+
               <div style={{ 
                 display: "grid", 
                 gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", 
@@ -310,15 +268,14 @@ export default function About({ onBack }) {
                           {item.subtitle}
                         </span>
 
-                        {item.detail && (
-                          <button 
-                            type="button" 
-                            className="read-more-btn"
-                            onClick={() => toggleExpand(index)}
-                          >
-                            {expandedIndex === index ? "READ LESS -" : "READ MORE +"}
-                          </button>
-                        )}
+                        <button 
+                          type="button" 
+                          className="read-more-btn"
+                          onMouseEnter={() => setHoveredIndex(index)}
+                          onMouseLeave={() => setHoveredIndex(null)}
+                        >
+                          {hoveredIndex === index ? "READ LESS -" : "READ MORE +"}
+                        </button>
                       </div>
 
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
@@ -334,7 +291,7 @@ export default function About({ onBack }) {
                           {item.date}
                         </span>
                         
-                        {expandedIndex === index && item.detail && (
+                        {hoveredIndex === index && (
                           <span style={{ 
                             color: "#b0b0b8", 
                             fontSize: "0.85rem", 
@@ -352,52 +309,7 @@ export default function About({ onBack }) {
                         )}
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </InfoCard>
 
-            <InfoCard title="Certifications" fw={14}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {certifications.map((cert, index) => (
-                  <div key={index} style={{
-                    background: "#1a1a22",
-                    border: "1px solid #25252a",
-                    borderRadius: "6px",
-                    padding: "16px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "12px"
-                  }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                      <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "1.0rem" }}>
-                        {cert.title}
-                      </span>
-                      <span style={{ color: "#00ff00", fontSize: "0.85rem" }}>
-                        Issued by: {cert.issuer}
-                      </span>
-                      {cert.credentialId && (
-                        <span style={{ color: "#60606a", fontSize: "0.75rem" }}>
-                          ID: {cert.credentialId}
-                        </span>
-                      )}
-                    </div>
-
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-                      <span style={{ 
-                        border: `1px solid ${cert.date === 'In Progress' ? '#d19a66' : '#25252a'}`,
-                        color: cert.date === 'In Progress' ? '#d19a66' : '#a0a0aa',
-                        fontSize: "0.65rem",
-                        fontWeight: "bold",
-                        padding: "2px 8px",
-                        borderRadius: "4px",
-                        letterSpacing: "1px"
-                      }}>
-                        {cert.date}
-                      </span>
-                    </div>
                   </div>
                 ))}
               </div>
