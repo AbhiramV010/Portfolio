@@ -48,7 +48,7 @@ export function FlapRow({text, length = 22, speed = 50}) {
 
 export default function Home() {
   const getGreeting = () => {
-    const hour = new Date().getHours(); // query system clock for hrs since 0:00
+    const hour = new Date().getHours();
     
     if (hour < 12) {
       return "Good morning!";
@@ -79,7 +79,7 @@ export default function Home() {
     <>
       <style>{`
         html, body {
-          margin: 1;
+          margin: 0;
           padding: 0;
           background: #0a0a0c;
           font-family: "Courier New", Courier, monospace;
@@ -145,7 +145,7 @@ export default function Home() {
           
           <div style={{ 
             display: "flex", 
-            justifyContent: "space-between", 
+            justify: "space-between", 
             color: "#55555c", 
             fontSize: "0.75rem", 
             fontWeight: "bold",
@@ -179,6 +179,12 @@ export default function Home() {
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                 <rect width="4" height="12" x="2" y="9"></rect>
                 <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+
+            <a href="https://devpost.com/AbhiramV010" target="_blank" rel="noopener noreferrer" aria-label="Devpost" style={{ display: 'flex' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2h7.5L18 12l-4.5 10H6V2zm5 15h2l2.5-5L13 7h-2v10z"></path>
               </svg>
             </a>
           </div>
