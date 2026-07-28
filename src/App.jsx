@@ -69,6 +69,7 @@ export default function Home() {
   if (currentView === "about") return <About onBack={() => setCurrentView("home")} />;
 
   const navBtnStyle = {
+    fontFamily: "inherit",
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
