@@ -1,5 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FlapRow } from '../App';
+
+function useReveal() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+}
 
 function LinkButton({ label, href }) {
   const [hover, setHover] = useState(false);
@@ -11,8 +34,8 @@ function LinkButton({ label, href }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        background: "#25252a",
-        color: hover ? "#f0f0f0" : "#a0a0aa",
+        background: "transparent",
+        color: hover ? "#00ff00" : "#a0a0aa",
         border: `2px solid ${hover ? "#00ff00" : "#35353a"}`,
         padding: "8px 16px",
         cursor: "pointer",
@@ -23,7 +46,8 @@ function LinkButton({ label, href }) {
         width: "fit-content",
         textDecoration: "none",
         display: "inline-block",
-        transition: "all 0.15s ease"
+        transform: hover ? "translateY(-2px)" : "translateY(0)",
+        transition: "all 0.2s ease"
       }}
     >
       {label}
@@ -32,48 +56,49 @@ function LinkButton({ label, href }) {
 }
 
 function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
+  const [ref, visible] = useReveal();
   return (
-    <div style={{
-      background: "#16161c",
-      border: "2px solid #25252a",
-      borderRadius: "8px",
-      padding: "24px",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      gap: "16px",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.5), inset 0 0 1px rgba(255,255,255,0.05)"
-    }}>
+    <div
+      ref={ref}
+      className={`project-entry ${visible ? "visible" : ""}`}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: "16px"
+      }}
+    >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <h3 style={{ 
-          color: "#f0f0f0", 
-          margin: 0, 
-          fontSize: "2.50rem", 
+        <h3 className="project-title" style={{
+          color: "#f0f0f0",
+          margin: 0,
+          fontSize: "2.50rem",
           fontWeight: "bold",
-          letterSpacing: "1px"
+          letterSpacing: "1px",
+          transition: "color 0.3s ease, text-shadow 0.3s ease"
         }}>
           {name}
         </h3>
-        <span style={{ 
-          color: "#00ff00", 
-          fontSize: "0.9rem", 
-          fontWeight: "bold" 
+        <span style={{
+          color: "#00ff00",
+          fontSize: "0.9rem",
+          fontWeight: "bold"
         }}>
           [{event}]
         </span>
       </div>
 
-      <div style={{ 
-        display: "grid", 
-        gridTemplateColumns: "1fr 1px 1fr", 
-        gap: "24px", 
-        alignItems: "center", 
-        flexGrow: 1 
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1px 1fr",
+        gap: "24px",
+        alignItems: "center",
+        flexGrow: 1
       }}>
-        <div style={{ 
-          color: "#a0a0aa", 
-          margin: 0, 
-          fontSize: "1.0rem", 
+        <div style={{
+          color: "#a0a0aa",
+          margin: 0,
+          fontSize: "1.0rem",
           lineHeight: "1.6",
           display: "flex",
           flexDirection: "column",
@@ -81,7 +106,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
           textAlign: "left"
         }}>
           <div>{desc}</div>
-          
+
           {actions.length > 0 && (
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "8px" }}>
               {actions.map((act, i) => (
@@ -92,12 +117,12 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
         </div>
 
         <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
-          
-        <div style={{ 
-          width: "100%", 
-          aspectRatio: "16/9", 
-          overflow: "hidden", 
-          borderRadius: "4px", 
+
+        <div className="project-media" style={{
+          width: "100%",
+          aspectRatio: "16/9",
+          overflow: "hidden",
+          borderRadius: "4px",
           border: "1px solid #25252a",
           background: "#0d0d11",
           position: "relative"
@@ -112,17 +137,17 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
         </div>
       </div>
 
-      <div style={{ 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingTop: "12px",
         borderTop: "1px dashed #25252a"
       }}>
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {stack.map((tech, i) => (
-            <span key={i} style={{
-              background: "#202026",
+            <span key={i} className="tech-tag" style={{
+              background: "transparent",
               color: "#b0b0b8",
               fontSize: "0.75rem",
               padding: "4px 8px",
@@ -161,7 +186,7 @@ export default function Projects({ onBack }) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: clamp(18px, 4.5vw, 36px); 
+          width: clamp(18px, 4.5vw, 36px);
           height: clamp(30px, 6vw, 50px);
           font-size: clamp(1rem, 3vw, 1.6rem);
           background: linear-gradient(to bottom, #151518 49%, #000000 51%);
@@ -190,7 +215,44 @@ export default function Projects({ onBack }) {
           border-color: #00ff00 !important;
           transform: translateY(-2px);
         }
-      `}</style>      
+
+        .project-entry {
+          padding-bottom: 32px;
+          border-bottom: 1px dashed #25252a;
+          opacity: 0;
+          transform: translateY(36px);
+          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-entry:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+        .project-entry.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .project-entry:hover .project-title {
+          color: #00ff00;
+          text-shadow: 0 0 14px rgba(0, 255, 0, 0.35);
+        }
+
+        .project-media {
+          transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+        .project-entry:hover .project-media {
+          transform: scale(1.015);
+          border-color: #00ff00;
+        }
+
+        .tech-tag {
+          transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+        .tech-tag:hover {
+          transform: translateY(-2px);
+          border-color: #00ff00;
+          color: #00ff00;
+        }
+      `}</style>
 
       <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
         <div style={{
@@ -203,38 +265,38 @@ export default function Projects({ onBack }) {
           display: "flex",
           flexDirection: "column",
           gap: "24px",
-          width: "100%",            
-          minHeight: "calc(100vh - 48px)", 
+          width: "100%",
+          minHeight: "calc(100vh - 48px)",
         }}>
-          <button 
+          <button
             onClick={onBack}
             style={{
               marginTop: "20px",
               background: "#25252a",
               color: "#a0a0aa",
               border: "2px solid #35353a",
-              padding: "6px 16px",                  
+              padding: "6px 16px",
               cursor: "pointer",
               fontFamily: '"Courier New", Courier, monospace',
               fontWeight: "bold",
-              fontSize: 20,                        
-              width: "fit-content",                 
+              fontSize: 20,
+              width: "fit-content",
               alignSelf: "flex-start",
-              borderRadius: "8px"                   
+              borderRadius: "8px"
             }}
-          > 
+          >
             BACK
           </button>
-          
+
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow key={tick} text="My Projects" length={11} />
           </div>
-          
+
           <div style={{ display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start" }}>
-            <ProjectCard 
+            <ProjectCard
               name={<FlapRow key="autovision" text="Autovision" length={10} />}
               desc="An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views. Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection. Features a Streamlit interface with manual slider controls for precise motor and angle adjustments."
-              event="3RD PLACE - 2026" 
+              event="3RD PLACE - 2026"
               mediaSrc="https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl"
               stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
               actions={[
@@ -242,10 +304,10 @@ export default function Projects({ onBack }) {
               ]}
             />
 
-            <ProjectCard 
+            <ProjectCard
               name={<FlapRow key="halo" text="Halo Assistant" length={14} />}
               desc="An ElectronJS application designed for JecHacks 2026 to act as an AI assistant that teaches anything. It achieves this by drawing over the user's screen at 60FPS using a canvas overlay (numbers, text, & diagrams). Halo can even move the user's mouse to perform actions for them."
-              event="JecHacks 2026 - 2nd Place" 
+              event="JecHacks 2026 - 2nd Place"
               mediaSrc="https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"
               stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT", "nut-js"]}
               actions={[
@@ -253,22 +315,22 @@ export default function Projects({ onBack }) {
               ]}
             />
 
-            <ProjectCard 
+            <ProjectCard
               name={<FlapRow key="iris" text="Iris-Lite" length={9} />}
               desc="A lightweight surveillance prototype built on the Raspberry Pi 4B. Uses a set of Python scripts for event detection and PELICAN compression software. Features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline, backed by a carbon-aware charging circuit."
-              event="STEAM IC 2026" 
+              event="STEAM IC 2026"
               mediaSrc="https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview"
-              stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]} 
+              stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]}
               actions={[
                 { label: "Source Code", href: "https://github.com/AbhiramV010/Iris-Lite" },
                 { label: "Website", href: "https://abhiramv010.github.io/Iris_Lite/" }
               ]}
             />
 
-            <ProjectCard 
+            <ProjectCard
               name={<FlapRow key="ez-volunteer" text="EZ-Volunteer Sys" length={16} />}
               desc="A platform designed to centralize the tracking of volunteer hours to replace error-prone manual spreadsheet tracking at a local organization."
-              event="2025" 
+              event="2025"
               mediaSrc="https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"
               stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
               actions={[

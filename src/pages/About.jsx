@@ -1,22 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FlapRow } from '../App';
 
+function useReveal() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+}
+
 function InfoCard({ title, children, fw }) {
+  const [ref, visible] = useReveal();
   return (
-    <div style={{
-      background: "#16161c",
-      border: "2px solid #25252a",
-      borderRadius: "8px",
-      padding: "24px",
-      display: "flex",
-      flexDirection: "column",
-      gap: "16px",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.5), inset 0 0 1px rgba(255,255,255,0.05)"
-    }}>
-      <h3 style={{ 
-        color: "#f0f0f0", 
-        margin: 0, 
-        fontSize: "1.75rem", 
+    <div
+      ref={ref}
+      className={`info-entry ${visible ? "visible" : ""}`}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px"
+      }}
+    >
+      <h3 style={{
+        color: "#f0f0f0",
+        margin: 0,
+        fontSize: "1.75rem",
         fontWeight: "bold",
         letterSpacing: "1px",
         borderBottom: "1px dashed #25252a",
@@ -26,6 +49,92 @@ function InfoCard({ title, children, fw }) {
       </h3>
       <div style={{ color: "#a0a0aa", fontSize: "1.0rem", lineHeight: "1.6" }}>
         {children}
+      </div>
+    </div>
+  );
+}
+
+function SkillGroup({ category, items }) {
+  const [ref, visible] = useReveal();
+  return (
+    <div ref={ref} className={`skill-group ${visible ? "visible" : ""}`}>
+      <div style={{ color: "#00ff00", fontWeight: "bold", fontSize: "0.9rem", marginBottom: "10px" }}>
+        [{category}]
+      </div>
+      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+        {items.map((tech, i) => (
+          <span key={i} className="tech-tag" style={{
+            background: "transparent",
+            color: "#b0b0b8",
+            fontSize: "0.75rem",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            border: "1px solid #303036"
+          }}>
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TimelineRow({ item, index, hoveredIndex, setHoveredIndex }) {
+  const [ref, visible] = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={`timeline-row ${item.highlight ? 'active' : ''} ${visible ? 'visible' : ''}`}
+    >
+      <div className="timeline-indicator" />
+
+      <div className="timeline-content">
+        <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+            <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "1.2rem" }}>
+              {item.event}
+            </span>
+          </div>
+
+          <span style={{ color: "#00ff00", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
+            {item.subtitle}
+          </span>
+
+          <button
+            type="button"
+            className="read-more-btn"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {hoveredIndex === index ? "READ LESS -" : "READ MORE +"}
+          </button>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
+          <span style={{
+            border: `1px solid ${item.highlight ? '#00ff00' : '#25252a'}`,
+            color: item.highlight ? '#00ff00' : '#a0a0aa',
+            fontSize: "0.65rem",
+            fontWeight: "bold",
+            padding: "2px 8px",
+            borderRadius: "4px",
+            letterSpacing: "1px"
+          }}>
+            {item.date}
+          </span>
+
+          <div className={`timeline-detail ${hoveredIndex === index ? 'open' : ''}`}>
+            <span style={{
+              color: "#b0b0b8",
+              fontSize: "0.85rem",
+              fontFamily: '"Courier New", Courier, monospace',
+              display: "block",
+              textAlign: "right"
+            }}>
+              {item.detail}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -62,12 +171,12 @@ export default function About({ onBack }) {
           font-family: "Courier New", Courier, monospace;
           overflow-x: hidden;
         }
-        
+
         .flap-cell {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: clamp(18px, 4.5vw, 36px); 
+          width: clamp(18px, 4.5vw, 36px);
           height: clamp(30px, 6vw, 50px);
           font-size: clamp(1rem, 3vw, 1.6rem);
           background: linear-gradient(to bottom, #151518 49%, #000000 51%);
@@ -89,12 +198,52 @@ export default function About({ onBack }) {
           background: rgba(0, 0, 0, 0.7);
         }
 
+        .info-entry {
+          padding-top: 32px;
+          border-top: 1px dashed #25252a;
+          opacity: 0;
+          transform: translateY(36px);
+          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .info-entry:first-child {
+          padding-top: 0;
+          border-top: none;
+        }
+        .info-entry.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .skill-group {
+          border-left: 2px solid #25252a;
+          padding-left: 16px;
+          opacity: 0;
+          transform: translateX(-16px);
+          transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s ease;
+        }
+        .skill-group.visible {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .skill-group:hover {
+          border-color: #00ff00;
+        }
+
+        .tech-tag {
+          transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+        .tech-tag:hover {
+          transform: translateY(-2px);
+          border-color: #00ff00;
+          color: #00ff00;
+        }
+
         .timeline-wrapper {
           display: flex;
           position: relative;
           padding-left: 32px;
           flex-direction: column;
-          gap: 16px;
+          gap: 0;
         }
 
         .timeline-axis {
@@ -111,6 +260,18 @@ export default function About({ onBack }) {
           position: relative;
           align-items: center;
           width: 100%;
+          padding: 20px 0;
+          border-bottom: 1px dashed #1e1e24;
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .timeline-row:last-child {
+          border-bottom: none;
+        }
+        .timeline-row.visible {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .timeline-indicator {
@@ -126,24 +287,31 @@ export default function About({ onBack }) {
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
         }
 
         .timeline-row.active .timeline-indicator {
           border-color: #00ff00;
           background: #00ff00;
-          box-shadow: 0 0 12px rgba(209, 154, 102, 0.4);
+          box-shadow: 0 0 12px rgba(0, 255, 0, 0.4);
         }
 
-        .timeline-card {
+        .timeline-row:hover .timeline-indicator {
+          transform: scale(1.2);
+          border-color: #00ff00;
+        }
+
+        .timeline-content {
           width: 100%;
-          background: #131318;
-          border: 1px solid #202026;
-          border-radius: 6px;
-          padding: 24px;
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
           box-sizing: border-box;
+          transition: transform 0.3s ease;
+        }
+
+        .timeline-row:hover .timeline-content {
+          transform: translateX(4px);
         }
 
         .read-more-btn {
@@ -165,7 +333,19 @@ export default function About({ onBack }) {
         .read-more-btn:hover {
           color: #00ff00;
         }
-      `}</style>      
+
+        .timeline-detail {
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.35s ease;
+        }
+        .timeline-detail.open {
+          max-height: 120px;
+          opacity: 1;
+          margin-top: 6px;
+        }
+      `}</style>
 
       <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
         <div style={{
@@ -178,73 +358,50 @@ export default function About({ onBack }) {
           display: "flex",
           flexDirection: "column",
           gap: "24px",
-          width: "100%",            
-          minHeight: "calc(100vh - 48px)", 
+          width: "100%",
+          minHeight: "calc(100vh - 48px)",
         }}>
-          <button 
+          <button
             onClick={onBack}
             style={{
               marginTop: "20px",
               background: "#25252a",
               color: "#a0a0aa",
               border: "2px solid #35353a",
-              padding: "6px 16px",                  
+              padding: "6px 16px",
               cursor: "pointer",
               fontFamily: '"Courier New", Courier, monospace',
               fontWeight: "bold",
-              fontSize: 20,                        
-              width: "fit-content",                 
+              fontSize: 20,
+              width: "fit-content",
               alignSelf: "flex-start",
-              borderRadius: "8px"                   
+              borderRadius: "8px"
             }}
           > BACK
           </button>
-          
+
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <FlapRow key={tick} text="About Me" length={8} />
             <br />
           </div>
-          
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            
-            <InfoCard title="Overview" fw={8}>
-              I am a developer and aspiring electrical engineer. 
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+
+            <InfoCard title="" fw={0}>
+              I am a developer and aspiring electrical engineer.
               I build custom circuit boards, write low-level code,
               and design software solutions to solve complex physical problems.
             </InfoCard>
 
             <InfoCard title="My Developer Stack" fw = {18}>
 
-              <div style={{ 
-                display: "grid", 
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", 
-                gap: "16px" 
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "20px"
               }}>
                 {skillGroups.map((group, index) => (
-                  <div key={index} style={{
-                    background: "#1a1a22",
-                    border: "1px solid #25252a",
-                    borderRadius: "6px",
-                    padding: "16px"
-                  }}>
-                    <div style={{ color: "#00ff00", fontWeight: "bold", fontSize: "0.9rem", marginBottom: "10px" }}>
-                      [{group.category}]
-                    </div>
-                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                      {group.items.map((tech, i) => (
-                        <span key={i} style={{
-                          background: "#202026",
-                          color: "#b0b0b8",
-                          fontSize: "0.75rem",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          border: "1px solid #303036"
-                        }}>
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  <SkillGroup key={index} category={group.category} items={group.items} />
                 ))}
               </div>
             </InfoCard>
@@ -253,64 +410,13 @@ export default function About({ onBack }) {
               <div className="timeline-wrapper">
                 <div className="timeline-axis" />
                 {timeline.map((item, index) => (
-                  <div key={index} className={`timeline-row ${item.highlight ? 'active' : ''}`}>
-                    <div className="timeline-indicator" />
-                    
-                    <div className="timeline-card">
-                      <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-                          <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "1.2rem" }}>
-                            {item.event}
-                          </span>
-                        </div>
-                        
-                        <span style={{ color: "#00ff00", fontSize: "0.85rem", marginTop: "4px", fontWeight: "500" }}>
-                          {item.subtitle}
-                        </span>
-
-                        <button 
-                          type="button" 
-                          className="read-more-btn"
-                          onMouseEnter={() => setHoveredIndex(index)}
-                          onMouseLeave={() => setHoveredIndex(null)}
-                        >
-                          {hoveredIndex === index ? "READ LESS -" : "READ MORE +"}
-                        </button>
-                      </div>
-
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
-                        <span style={{ 
-                          border: `1px solid ${item.highlight ? '#00ff00' : '#25252a'}`,
-                          color: item.highlight ? '#00ff00' : '#a0a0aa',
-                          fontSize: "0.65rem",
-                          fontWeight: "bold",
-                          padding: "2px 8px",
-                          borderRadius: "4px",
-                          letterSpacing: "1px"
-                        }}>
-                          {item.date}
-                        </span>
-                        
-                        {hoveredIndex === index && (
-                          <span style={{ 
-                            color: "#b0b0b8", 
-                            fontSize: "0.85rem", 
-                            fontFamily: '"Courier New", Courier, monospace',
-                            marginTop: "6px",
-                            textAlign: "right",
-                            background: "#1c1c24",
-                            padding: "8px 12px",
-                            borderRadius: "4px",
-                            border: "1px solid #282830",
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
-                          }}>
-                            {item.detail}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                  </div>
+                  <TimelineRow
+                    key={index}
+                    item={item}
+                    index={index}
+                    hoveredIndex={hoveredIndex}
+                    setHoveredIndex={setHoveredIndex}
+                  />
                 ))}
               </div>
             </InfoCard>
