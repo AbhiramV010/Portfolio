@@ -1,28 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FlapRow } from '../App';
-
-function useReveal() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return [ref, visible];
-}
 
 function LinkButton({ label, href }) {
   const [hover, setHover] = useState(false);
@@ -55,12 +32,9 @@ function LinkButton({ label, href }) {
   );
 }
 
-function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
-  const [ref, visible] = useReveal();
+function ProjectCard({ name, flapLength, desc, event, stack, mediaSrc, actions = [] }) {
   return (
     <div
-      ref={ref}
-      className={`project-entry ${visible ? "visible" : ""}`}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -68,7 +42,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
         gap: "16px"
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "8px" }}>
         <h3 className="project-title" style={{
           color: "#f0f0f0",
           margin: 0,
@@ -77,7 +51,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
           letterSpacing: "1px",
           transition: "color 0.3s ease, text-shadow 0.3s ease"
         }}>
-          {name}
+          <FlapRow key={name} text={name} length={flapLength} />
         </h3>
         <span style={{
           color: "#00ff00",
@@ -88,7 +62,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
         </span>
       </div>
 
-      <div style={{
+      <div className="project-body" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1px 1fr",
         gap: "24px",
@@ -116,7 +90,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
           )}
         </div>
 
-        <div style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
+        <div className="project-divider" style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
 
         <div className="project-media" style={{
           width: "100%",
@@ -130,7 +104,7 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
           <iframe
             src={mediaSrc}
             style={{ width: "100%", height: "100%", border: "none" }}
-            title={typeof name === "string" ? name : "Project Media"}
+            title={name}
             allowFullScreen
             allow="autoplay"
           />
@@ -163,13 +137,79 @@ function ProjectCard({ name, desc, event, stack, mediaSrc, actions = [] }) {
   );
 }
 
+const PROJECTS = [
+  {
+    name: "Autovision",
+    flapLength: 10,
+    desc: "An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views. Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection. Features a Streamlit interface with manual slider controls for precise motor and angle adjustments.",
+    event: "3RD PLACE - 2026",
+    mediaSrc: "https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl",
+    stack: ["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"],
+    actions: [{ label: "Source Code", href: "https://github.com/AbhiramV010/HTVHackDay26" }]
+  },
+  {
+    name: "Halo Assistant",
+    flapLength: 14,
+    desc: "An ElectronJS application designed for JecHacks 2026 to act as an AI assistant that teaches anything. It achieves this by drawing over the user's screen at 60FPS using a canvas overlay (numbers, text, & diagrams). Halo can even move the user's mouse to perform actions for them.",
+    event: "JecHacks 2026 - 2nd Place",
+    mediaSrc: "https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03",
+    stack: ["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT", "nut-js"],
+    actions: [{ label: "Source Code", href: "https://github.com/AbhiramV010/Halo_JecHacks26" }]
+  },
+  {
+    name: "Iris-Lite",
+    flapLength: 9,
+    desc: "A lightweight surveillance prototype built on the Raspberry Pi 4B. Uses a set of Python scripts for event detection and PELICAN compression software. Features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline, backed by a carbon-aware charging circuit.",
+    event: "STEAM IC 2026",
+    mediaSrc: "https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview",
+    stack: ["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"],
+    actions: [
+      { label: "Source Code", href: "https://github.com/AbhiramV010/Iris-Lite" },
+      { label: "Website", href: "https://abhiramv010.github.io/Iris_Lite/" }
+    ]
+  },
+  {
+    name: "EZ-Volunteer Sys",
+    flapLength: 16,
+    desc: "A platform designed to centralize the tracking of volunteer hours to replace error-prone manual spreadsheet tracking at a local organization.",
+    event: "2025",
+    mediaSrc: "https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j",
+    stack: ["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"],
+    actions: [{ label: "Source Code", href: "https://github.com/AbhiramV010/volunteersys-web" }]
+  }
+];
+
 export default function Projects({ onBack }) {
   const [tick, setTick] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
     const interval = setInterval(() => setTick(t => t + 1), 7500);
     return () => clearInterval(interval);
   }, []);
+
+  const goTo = useCallback((idx) => {
+    setActiveIndex(prev => {
+      if (idx === prev) return prev;
+      setDirection(idx > prev ? 1 : -1);
+      return idx;
+    });
+  }, []);
+
+  const goPrev = useCallback(() => goTo((activeIndex - 1 + PROJECTS.length) % PROJECTS.length), [activeIndex, goTo]);
+  const goNext = useCallback(() => goTo((activeIndex + 1) % PROJECTS.length), [activeIndex, goTo]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [goPrev, goNext]);
+
+  const active = PROJECTS[activeIndex];
 
   return (
     <>
@@ -216,21 +256,6 @@ export default function Projects({ onBack }) {
           transform: translateY(-2px);
         }
 
-        .project-entry {
-          padding-bottom: 32px;
-          border-bottom: 1px dashed #25252a;
-          opacity: 0;
-          transform: translateY(36px);
-          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .project-entry:last-child {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-        .project-entry.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
         .project-entry:hover .project-title {
           color: #00ff00;
           text-shadow: 0 0 14px rgba(0, 255, 0, 0.35);
@@ -252,10 +277,133 @@ export default function Projects({ onBack }) {
           border-color: #00ff00;
           color: #00ff00;
         }
+
+        .project-tabs {
+          display: flex;
+          gap: 10px;
+          overflow-x: auto;
+          padding-bottom: 4px;
+          scrollbar-width: none;
+        }
+        .project-tabs::-webkit-scrollbar { display: none; }
+
+        .project-tab {
+          flex: 0 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding: 10px 16px;
+          border-radius: 8px;
+          border: 2px solid #25252a;
+          background: #16161a;
+          color: #a0a0aa;
+          cursor: pointer;
+          font-family: inherit;
+          text-align: left;
+          transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .project-tab:hover {
+          border-color: #45454d;
+          transform: translateY(-2px);
+        }
+        .project-tab.active {
+          border-color: #00ff00;
+          color: #f0f0f0;
+        }
+        .project-tab .tab-index {
+          font-size: 0.65rem;
+          color: #00ff00;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
+        .project-tab .tab-name {
+          font-size: 0.9rem;
+          font-weight: bold;
+          white-space: nowrap;
+        }
+
+        .project-frame {
+          animation-duration: 0.45s;
+          animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+          animation-fill-mode: both;
+          border: 2px solid #25252a;
+          border-radius: 12px;
+          padding: 28px;
+          background: #0d0d11;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 2px rgba(255,255,255,0.05);
+          transition: border-color 0.3s ease;
+        }
+        .project-frame:hover {
+          border-color: #00ff00;
+        }
+        .project-frame.dir-next {
+          animation-name: slideInRight;
+        }
+        .project-frame.dir-prev {
+          animation-name: slideInLeft;
+        }
+        @keyframes slideInRight {
+          from { opacity: 0; transform: perspective(1600px) rotateY(-14deg) translateX(40px); }
+          to { opacity: 1; transform: perspective(1600px) rotateY(0deg) translateX(0); }
+        }
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: perspective(1600px) rotateY(14deg) translateX(-40px); }
+          to { opacity: 1; transform: perspective(1600px) rotateY(0deg) translateX(0); }
+        }
+
+        .project-nav-btn {
+          background: transparent;
+          border: 2px solid #25252a;
+          color: #a0a0aa;
+          font-family: inherit;
+          font-weight: bold;
+          font-size: 0.85rem;
+          letter-spacing: 1px;
+          padding: 8px 18px;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+        }
+        .project-nav-btn:hover {
+          border-color: #00ff00;
+          color: #00ff00;
+          transform: translateY(-2px);
+        }
+
+        .project-progress {
+          color: #808088;
+          font-size: 0.8rem;
+          letter-spacing: 2px;
+          font-weight: bold;
+        }
+
+        @media (max-width: 720px) {
+          .project-body {
+            grid-template-columns: 1fr !important;
+          }
+          .project-divider {
+            display: none;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .projects-shell {
+            padding: 12px !important;
+          }
+          .projects-card {
+            padding: 20px 14px !important;
+          }
+          .project-frame {
+            padding: 18px !important;
+          }
+          .project-title {
+            font-size: 1.8rem !important;
+          }
+        }
       `}</style>
 
-      <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
-        <div style={{
+      <div className="projects-shell" style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
+        <div className="projects-card" style={{
           background: "#111115",
           padding: "30px",
           borderRadius: "12px",
@@ -292,51 +440,36 @@ export default function Projects({ onBack }) {
             <FlapRow key={tick} text="My Projects" length={11} />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "32px", justifyContent: "flex-start" }}>
-            <ProjectCard
-              name={<FlapRow key="autovision" text="Autovision" length={10} />}
-              desc="An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views. Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection. Features a Streamlit interface with manual slider controls for precise motor and angle adjustments."
-              event="3RD PLACE - 2026"
-              mediaSrc="https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl"
-              stack={["Python", "Arduino Uno R3", "Streamlit", "Gemini 2.5 Flash", "OpenCV"]}
-              actions={[
-                { label: "Source Code", href: "https://github.com/AbhiramV010/HTVHackDay26" }
-              ]}
-            />
+          <div className="project-tabs">
+            {PROJECTS.map((p, i) => (
+              <button
+                key={p.name}
+                className={`project-tab ${i === activeIndex ? "active" : ""}`}
+                onClick={() => goTo(i)}
+                aria-selected={i === activeIndex}
+              >
+                <span className="tab-index">{String(i + 1).padStart(2, "0")}</span>
+                <span className="tab-name">{p.name}</span>
+              </button>
+            ))}
+          </div>
 
-            <ProjectCard
-              name={<FlapRow key="halo" text="Halo Assistant" length={14} />}
-              desc="An ElectronJS application designed for JecHacks 2026 to act as an AI assistant that teaches anything. It achieves this by drawing over the user's screen at 60FPS using a canvas overlay (numbers, text, & diagrams). Halo can even move the user's mouse to perform actions for them."
-              event="JecHacks 2026 - 2nd Place"
-              mediaSrc="https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03"
-              stack={["Electron JS", "HTML/CSS", "Anthropic API", "ElevenLabs TTS & STT", "nut-js"]}
-              actions={[
-                { label: "Source Code", href: "https://github.com/AbhiramV010/Halo_JecHacks26" }
-              ]}
-            />
+          <div key={activeIndex} className={`project-entry project-frame dir-${direction === 1 ? "next" : "prev"}`}>
+            <ProjectCard {...active} />
+          </div>
 
-            <ProjectCard
-              name={<FlapRow key="iris" text="Iris-Lite" length={9} />}
-              desc="A lightweight surveillance prototype built on the Raspberry Pi 4B. Uses a set of Python scripts for event detection and PELICAN compression software. Features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline, backed by a carbon-aware charging circuit."
-              event="STEAM IC 2026"
-              mediaSrc="https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview"
-              stack={["Python 3.12.7", "Linux Shell", "Raspberry Pi", "C++"]}
-              actions={[
-                { label: "Source Code", href: "https://github.com/AbhiramV010/Iris-Lite" },
-                { label: "Website", href: "https://abhiramv010.github.io/Iris_Lite/" }
-              ]}
-            />
-
-            <ProjectCard
-              name={<FlapRow key="ez-volunteer" text="EZ-Volunteer Sys" length={16} />}
-              desc="A platform designed to centralize the tracking of volunteer hours to replace error-prone manual spreadsheet tracking at a local organization."
-              event="2025"
-              mediaSrc="https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j"
-              stack={["Python 3", "React", "Node.js", "FastAPI", "PostgreSQL"]}
-              actions={[
-                { label: "Source Code", href: "https://github.com/AbhiramV010/volunteersys-web" }
-              ]}
-            />
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: "12px",
+            borderTop: "1px dashed #25252a"
+          }}>
+            <button className="project-nav-btn" onClick={goPrev}>&larr; PREV</button>
+            <span className="project-progress">
+              {String(activeIndex + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
+            </span>
+            <button className="project-nav-btn" onClick={goNext}>NEXT &rarr;</button>
           </div>
         </div>
       </div>

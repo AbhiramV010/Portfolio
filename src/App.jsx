@@ -103,11 +103,11 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 8rem;
-          height: 3.5rem;
+          width: clamp(16px, 4.3vw, 3.2rem);
+          height: clamp(28px, 7vw, 3.5rem);
           background: linear-gradient(to bottom, #151518 49%, #000000 51%);
           color: #f0f0f0;
-          font-size: 1.8rem;
+          font-size: clamp(0.9rem, 2.6vw, 1.8rem);
           font-weight: bold;
           border-radius: 8px;
           border: 1px solid #25252a;
@@ -132,6 +132,35 @@ export default function Home() {
           border-color: #00ff00 !important;
           transform: translateY(-2px);
         }
+
+        .home-card {
+          padding: 30px;
+        }
+        .home-social svg {
+          width: 48px;
+          height: 48px;
+        }
+
+        @media (max-width: 600px) {
+          .home-card {
+            padding: 20px 14px !important;
+          }
+          .home-social {
+            gap: 1.25rem !important;
+          }
+          .home-social svg {
+            width: 38px;
+            height: 38px;
+          }
+          .home-nav {
+            margin-top: 40px !important;
+            gap: 12px !important;
+          }
+          .home-nav .nav-flap {
+            flex: 1 1 40%;
+            min-width: 130px;
+          }
+        }
       `}</style>
 
       <div
@@ -146,9 +175,9 @@ export default function Home() {
         }}
       >
         <div
+          className="home-card"
           style={{
             background: "#111115",
-            padding: "30px",
             borderRadius: "12px",
             boxShadow: "0 20px 50px rgba(0,0,0,0.7), inset 0 0 2px rgba(255,255,255,0.1)",
             border: "4px solid #1a1a22",
@@ -171,7 +200,7 @@ export default function Home() {
             <FlapRow text={role} length={18} />
           </div>
 
-          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", justifyContent: "center", width: "100%", margin: "1rem 0" }}>
+          <div className="home-social" style={{ display: "flex", gap: "1.5rem", alignItems: "center", justifyContent: "center", width: "100%", margin: "1rem 0" }}>
             <a href="https://github.com/AbhiramV010/" target="_blank" rel="noopener noreferrer" aria-label="GitHub" style={{ display: "flex" }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
@@ -196,6 +225,7 @@ export default function Home() {
         </div>
 
         <nav
+          className="home-nav"
           style={{
             marginTop: "60px",
             display: "flex",

@@ -345,10 +345,30 @@ export default function About({ onBack }) {
           opacity: 1;
           margin-top: 6px;
         }
+
+        @media (max-width: 600px) {
+          .about-shell {
+            padding: 12px !important;
+          }
+          .about-card {
+            padding: 20px 14px !important;
+          }
+          .timeline-content {
+            flex-direction: column;
+            gap: 10px;
+          }
+          .timeline-content > div:last-child {
+            max-width: 100% !important;
+            align-items: flex-start !important;
+          }
+          .timeline-detail span {
+            text-align: left !important;
+          }
+        }
       `}</style>
 
-      <div style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
-        <div style={{
+      <div className="about-shell" style={{ width: "100%", minHeight: "100vh", boxSizing: "border-box", padding: "24px" }}>
+        <div className="about-card" style={{
           background: "#111115",
           padding: "30px",
           borderRadius: "12px",
