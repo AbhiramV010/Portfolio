@@ -102,7 +102,7 @@ function TimelineRow({ item, index, hoveredIndex, setHoveredIndex }) {
 
           <button
             type="button"
-            className="read-more-btn"
+            className="read-more-btn flap-press"
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
@@ -383,6 +383,7 @@ export default function About({ onBack }) {
         }}>
           <button
             onClick={onBack}
+            className="flap-press"
             style={{
               marginTop: "20px",
               background: "#25252a",

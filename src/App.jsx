@@ -1,6 +1,76 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
+
+const SHUTTER_COLS = 14;
+
+function BoardShutter({ active }) {
+  if (!active) return null;
+  return (
+    <div className="board-shutter" aria-hidden="true">
+      {Array.from({ length: SHUTTER_COLS }).map((_, i) => (
+        <div key={i} className="board-shutter-col" style={{ animationDelay: `${i * 18}ms` }} />
+      ))}
+    </div>
+  );
+}
+
+export function ShutterStyles() {
+  return (
+    <style>{`
+      .board-shutter {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        pointer-events: none;
+      }
+      .board-shutter-col {
+        flex: 1 1 0;
+        background: linear-gradient(to bottom, #131316 49%, #050506 51%);
+        border-left: 1px solid #000;
+        box-shadow: inset 0 0 12px rgba(0,0,0,0.6);
+        transform: translateY(-100%);
+        animation-name: shutterSweep;
+        animation-duration: 0.76s;
+        animation-timing-function: cubic-bezier(0.6, 0, 0.4, 1);
+        animation-fill-mode: forwards;
+      }
+      .board-shutter-col:first-child { border-left: none; }
+      @keyframes shutterSweep {
+        0% { transform: translateY(-100%); }
+        50% { transform: translateY(0%); }
+        100% { transform: translateY(100%); }
+      }
+
+      .board-ambient {
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(0, 255, 0, 0.018) 0px,
+          rgba(0, 255, 0, 0.018) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        animation: boardFlicker 6s ease-in-out infinite;
+      }
+      @keyframes boardFlicker {
+        0%, 96%, 100% { opacity: 1; }
+        97% { opacity: 0.85; }
+        98% { opacity: 1; }
+        98.5% { opacity: 0.9; }
+      }
+
+      .flap-press:active {
+        transform: translateY(1px) scaleY(0.93) !important;
+        transition: transform 0.06s ease !important;
+      }
+    `}</style>
+  );
+}
 
 const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
@@ -53,7 +123,28 @@ export default function Home() {
   };
 
   const [role, setRole] = useState("High School Junior");
-  const [currentView, setCurrentView] = useState("home");
+  const [displayView, setDisplayView] = useState("home");
+  const [transitioning, setTransitioning] = useState(false);
+  const pendingView = useRef("home");
+  const [now, setNow] = useState(new Date());
+
+  const navigate = (target) => {
+    if (transitioning || target === displayView) return;
+    pendingView.current = target;
+    setTransitioning(true);
+  };
+
+  useEffect(() => {
+    if (!transitioning) return;
+    const swapDelay = 500;
+    const endDelay = 1000;
+    const swap = setTimeout(() => setDisplayView(pendingView.current), swapDelay);
+    const end = setTimeout(() => setTransitioning(false), endDelay);
+    return () => {
+      clearTimeout(swap);
+      clearTimeout(end);
+    };
+  }, [transitioning]);
 
   useEffect(() => {
     const roles = ["embedded systems", "software developer", "aircraft", "aspiring engineer"];
@@ -65,8 +156,18 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  if (currentView === "projects") return <Projects onBack={() => setCurrentView("home")} />;
-  if (currentView === "about") return <About onBack={() => setCurrentView("home")} />;
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  let pageBody;
+
+  if (displayView === "projects") {
+    pageBody = <Projects onBack={() => navigate("home")} />;
+  } else if (displayView === "about") {
+    pageBody = <About onBack={() => navigate("home")} />;
+  }
 
   const navBtnStyle = {
     fontFamily: "inherit",
@@ -88,7 +189,8 @@ export default function Home() {
     boxSizing: "border-box"
   };
 
-  return (
+  if (displayView === "home") {
+    pageBody = (
     <>
       <style>{`
         html, body {
@@ -98,7 +200,67 @@ export default function Home() {
           font-family: "Courier New", Courier, monospace;
           overflow-x: hidden;
         }
-        
+
+        .home-bg {
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at 50% 0%, rgba(0, 255, 0, 0.07), transparent 55%),
+            radial-gradient(circle at 85% 90%, rgba(0, 255, 0, 0.05), transparent 45%);
+        }
+
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-card {
+          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .home-card:hover {
+          border-color: #24242c;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px rgba(0, 255, 0, 0.06), inset 0 0 2px rgba(255,255,255,0.1);
+        }
+
+        .home-nav {
+          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+
+        .home-status {
+          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #00ff00;
+          box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
+          animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.35; }
+        }
+
+        .home-social a {
+          transition: transform 0.2s ease;
+        }
+        .home-social a:hover {
+          transform: translateY(-3px);
+        }
+        .home-social a:hover svg {
+          stroke: #00ff00;
+          filter: drop-shadow(0 0 6px rgba(0, 255, 0, 0.4));
+        }
+        .home-social svg {
+          transition: stroke 0.2s ease, filter 0.2s ease;
+        }
+
         .flap-cell {
           display: inline-flex;
           align-items: center;
@@ -162,6 +324,8 @@ export default function Home() {
           }
         }
       `}</style>
+
+      <div className="home-bg" />
 
       <div
         style={{
@@ -235,17 +399,48 @@ export default function Home() {
             fontFamily: '"Courier New", Courier, monospace'
           }}
         >
-          <button onClick={() => setCurrentView("projects")} className="nav-flap" style={navBtnStyle}>
+          <button onClick={() => navigate("projects")} className="nav-flap flap-press" style={navBtnStyle}>
             PROJECTS
           </button>
-          <button onClick={() => setCurrentView("about")} className="nav-flap" style={navBtnStyle}>
+          <button onClick={() => navigate("about")} className="nav-flap flap-press" style={navBtnStyle}>
             ABOUT ME
           </button>
-          <a href={RESUME_DRIVE_URL} target="_blank" rel="noopener noreferrer" className="nav-flap" style={navBtnStyle}>
+          <a href={RESUME_DRIVE_URL} target="_blank" rel="noopener noreferrer" className="nav-flap flap-press" style={navBtnStyle}>
             RESUME
           </a>
         </nav>
+
+        <div
+          className="home-status"
+          style={{
+            marginTop: "28px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            color: "#808088",
+            fontSize: "0.75rem",
+            letterSpacing: "1px",
+            fontWeight: "bold"
+          }}
+        >
+          <span className="status-dot" />
+          <span>OPEN TO OPPORTUNITIES</span>
+          <span style={{ color: "#404048" }}>|</span>
+          <span>
+            {now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })}
+          </span>
+        </div>
       </div>
+    </>
+    );
+  }
+
+  return (
+    <>
+      {pageBody}
+      <div className="board-ambient" aria-hidden="true" />
+      <BoardShutter active={transitioning} />
+      <ShutterStyles />
     </>
   );
 }

@@ -414,10 +414,10 @@ export default function Projects({ onBack }) {
           flexDirection: "column",
           gap: "24px",
           width: "100%",
-          minHeight: "calc(100vh - 48px)",
         }}>
           <button
             onClick={onBack}
+            className="flap-press"
             style={{
               marginTop: "20px",
               background: "#25252a",
@@ -444,7 +444,7 @@ export default function Projects({ onBack }) {
             {PROJECTS.map((p, i) => (
               <button
                 key={p.name}
-                className={`project-tab ${i === activeIndex ? "active" : ""}`}
+                className={`project-tab flap-press ${i === activeIndex ? "active" : ""}`}
                 onClick={() => goTo(i)}
                 aria-selected={i === activeIndex}
               >
@@ -465,11 +465,11 @@ export default function Projects({ onBack }) {
             paddingTop: "12px",
             borderTop: "1px dashed #25252a"
           }}>
-            <button className="project-nav-btn" onClick={goPrev}>&larr; PREV</button>
+            <button className="project-nav-btn flap-press" onClick={goPrev}>&larr; PREV</button>
             <span className="project-progress">
               {String(activeIndex + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
             </span>
-            <button className="project-nav-btn" onClick={goNext}>NEXT &rarr;</button>
+            <button className="project-nav-btn flap-press" onClick={goNext}>NEXT &rarr;</button>
           </div>
         </div>
       </div>
