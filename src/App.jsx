@@ -233,20 +233,6 @@ export default function Home() {
           animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
         }
 
-        .status-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #00ff00;
-          box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
-          animation: statusPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes statusPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.35; }
-        }
-
         .home-social a {
           transition: transform 0.2s ease;
         }
@@ -423,7 +409,6 @@ export default function Home() {
             fontWeight: "bold"
           }}
         >
-          <span className="status-dot" />
           <span>OPEN TO OPPORTUNITIES</span>
           <span style={{ color: "#404048" }}>|</span>
           <span>
