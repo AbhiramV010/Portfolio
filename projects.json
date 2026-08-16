@@ -49,7 +49,6 @@
     "flapLength": 20,
     "desc": "Takes a grid and a word list, checks all eight directions from every starting letter, and highlights each match on the grid. There's no back end. The page loads Pyodide (CPython built for WebAssembly) and runs solver.py itself in the browser, so it's the same code you'd import in a Python REPL, and the grid never leaves the page.",
     "event": "2025",
-    "mediaSrc": "https://searchsolver.netlify.app",
     "stack": ["Python 3", "Pyodide", "WebAssembly", "JavaScript"],
     "actions": [
       { "label": "Source Code", "href": "https://github.com/AbhiramV010/wordsearch-solver" },

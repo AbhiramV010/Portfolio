@@ -65,7 +65,7 @@ function ProjectCard({ name, flapLength, desc, event, stack, mediaSrc, actions =
 
       <div className="project-body" style={{
         display: "grid",
-        gridTemplateColumns: "1fr 1px 1fr",
+        gridTemplateColumns: mediaSrc ? "1fr 1px 1fr" : "1fr",
         gap: "24px",
         alignItems: "center",
         flexGrow: 1
@@ -91,25 +91,29 @@ function ProjectCard({ name, flapLength, desc, event, stack, mediaSrc, actions =
           )}
         </div>
 
-        <div className="project-divider" style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
+        {mediaSrc && (
+          <>
+            <div className="project-divider" style={{ borderLeft: "1px dashed #25252a", height: "100%", alignSelf: "stretch" }} />
 
-        <div className="project-media" style={{
-          width: "100%",
-          aspectRatio: "16/9",
-          overflow: "hidden",
-          borderRadius: "4px",
-          border: "1px solid #25252a",
-          background: "#0d0d11",
-          position: "relative"
-        }}>
-          <iframe
-            src={mediaSrc}
-            style={{ width: "100%", height: "100%", border: "none" }}
-            title={name}
-            allowFullScreen
-            allow="autoplay"
-          />
-        </div>
+            <div className="project-media" style={{
+              width: "100%",
+              aspectRatio: "16/9",
+              overflow: "hidden",
+              borderRadius: "4px",
+              border: "1px solid #25252a",
+              background: "#0d0d11",
+              position: "relative"
+            }}>
+              <iframe
+                src={mediaSrc}
+                style={{ width: "100%", height: "100%", border: "none" }}
+                title={name}
+                allowFullScreen
+                allow="autoplay"
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <div style={{
