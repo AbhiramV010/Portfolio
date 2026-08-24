@@ -310,41 +310,49 @@ export default function Home() {
           height: 48px;
         }
 
+        .home-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          padding: 40px 20px;
+          box-sizing: border-box;
+        }
+
         @media (max-width: 600px) {
+          .home-wrapper {
+            justify-content: space-evenly;
+            min-height: 100svh;
+            padding: 32px 20px;
+          }
           .home-card {
-            padding: 20px 14px !important;
+            padding: 28px 18px !important;
           }
           .home-social {
-            gap: 1.25rem !important;
+            gap: 1.5rem !important;
           }
           .home-social svg {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
           }
           .home-nav {
-            margin-top: 40px !important;
-            gap: 12px !important;
+            margin-top: 0 !important;
+            gap: 16px !important;
           }
           .home-nav .nav-flap {
             flex: 1 1 40%;
             min-width: 130px;
+          }
+          .home-status {
+            margin-top: 0 !important;
           }
         }
       `}</style>
 
       <div className="home-bg" />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-          padding: "40px 20px",
-          boxSizing: "border-box"
-        }}
-      >
+      <div className="home-wrapper">
         <div
           className="home-card"
           style={{
