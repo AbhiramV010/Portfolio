@@ -36,17 +36,19 @@ function InfoCard({ title, children, fw }) {
         gap: "16px"
       }}
     >
-      <h3 style={{
-        color: "#f0f0f0",
-        margin: 0,
-        fontSize: "1.75rem",
-        fontWeight: "bold",
-        letterSpacing: "1px",
-        borderBottom: "1px dashed #25252a",
-        paddingBottom: "12px"
-      }}>
-        {<FlapRow key={1000} text={title} length={fw} />}
-      </h3>
+      {title && (
+        <h3 style={{
+          color: "#f0f0f0",
+          margin: 0,
+          fontSize: "1.75rem",
+          fontWeight: "bold",
+          letterSpacing: "1px",
+          borderBottom: "1px dashed #25252a",
+          paddingBottom: "12px"
+        }}>
+          {<FlapRow key={1000} text={title} length={fw} />}
+        </h3>
+      )}
       <div style={{ color: "#a0a0aa", fontSize: "1.0rem", lineHeight: "1.6" }}>
         {children}
       </div>
@@ -57,7 +59,7 @@ function InfoCard({ title, children, fw }) {
 function SkillGroup({ category, items }) {
   const [ref, visible] = useReveal();
   return (
-    <div ref={ref} className={`skill-group ${visible ? "visible" : ""}`}>
+    <div ref={ref} className={`reveal-left ${visible ? "visible" : ""}`}>
       <div style={{ color: "#00ff00", fontWeight: "bold", fontSize: "0.9rem", marginBottom: "10px" }}>
         [{category}]
       </div>
@@ -75,6 +77,54 @@ function SkillGroup({ category, items }) {
           </span>
         ))}
       </div>
+    </div>
+  );
+}
+
+function EducationEntry({ item }) {
+  const [ref, visible] = useReveal();
+  return (
+    <div ref={ref} className={`reveal-left ${visible ? "visible" : ""}`}>
+      <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+        <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "1.1rem" }}>{item.school}</span>
+        <span style={{ color: "#808088", fontSize: "0.8rem" }}>{item.date}</span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", marginTop: "4px" }}>
+        <span style={{ color: "#00ff00", fontSize: "0.85rem" }}>{item.degree}</span>
+        <span style={{ color: "#808088", fontSize: "0.75rem" }}>{item.location}</span>
+      </div>
+      {item.honor && (
+        <span style={{ color: "#a0a0aa", fontSize: "0.85rem", display: "block", marginTop: "10px" }}>
+          » {item.honor}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function CertificationEntry({ cert }) {
+  const [ref, visible] = useReveal();
+  const inProgress = cert.date === "In Progress";
+  return (
+    <div ref={ref} className={`reveal-left ${visible ? "visible" : ""}`}>
+      <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+        <span style={{ color: "#f0f0f0", fontWeight: "bold", fontSize: "0.95rem" }}>{cert.name}</span>
+        <span style={{
+          color: inProgress ? "#00ff00" : "#808088",
+          fontSize: "0.68rem",
+          fontWeight: "bold",
+          letterSpacing: "1px",
+          whiteSpace: "nowrap"
+        }}>
+          {cert.date}
+        </span>
+      </div>
+      <span style={{ color: "#a0a0aa", fontSize: "0.8rem", display: "block", marginTop: "2px" }}>{cert.issuer}</span>
+      {cert.credentialId && (
+        <span style={{ color: "#55555e", fontSize: "0.68rem", display: "block", marginTop: "6px" }}>
+          ID: {cert.credentialId}
+        </span>
+      )}
     </div>
   );
 }
@@ -100,14 +150,16 @@ function TimelineRow({ item, index, hoveredIndex, setHoveredIndex }) {
             {item.subtitle}
           </span>
 
-          <button
-            type="button"
-            className="read-more-btn flap-press"
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            {hoveredIndex === index ? "READ LESS -" : "READ MORE +"}
-          </button>
+          {item.detail && (
+            <button
+              type="button"
+              className="read-more-btn flap-press"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {hoveredIndex === index ? "READ LESS -" : "READ MORE +"}
+            </button>
+          )}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", maxWidth: "50%" }}>
@@ -123,17 +175,19 @@ function TimelineRow({ item, index, hoveredIndex, setHoveredIndex }) {
             {item.date}
           </span>
 
-          <div className={`timeline-detail ${hoveredIndex === index ? 'open' : ''}`}>
-            <span style={{
-              color: "#b0b0b8",
-              fontSize: "0.85rem",
-              fontFamily: '"Courier New", Courier, monospace',
-              display: "block",
-              textAlign: "right"
-            }}>
-              {item.detail}
-            </span>
-          </div>
+          {item.detail && (
+            <div className={`timeline-detail ${hoveredIndex === index ? 'open' : ''}`}>
+              <span style={{
+                color: "#b0b0b8",
+                fontSize: "0.85rem",
+                fontFamily: '"Courier New", Courier, monospace',
+                display: "block",
+                textAlign: "right"
+              }}>
+                {item.detail}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -149,16 +203,31 @@ export default function About({ onBack }) {
     return () => clearInterval(interval);
   }, []);
 
+  const education = [
+    {
+      school: "St. Edmund Campion CSS",
+      degree: "High School Diploma",
+      date: "Sep 2024 - Jun 2028",
+      location: "Brampton, ON",
+      honor: "9th Grade Honors",
+    },
+  ];
+
   const skillGroups = [
-    { category: "Frontend", items: ["React.js", "HTML", "CSS", "Java Swing", "CustomTkinter"] },
-    { category: "Backend", items: ["Python 3", "Node.js", "FastAPI", "PostgreSQL", "Java 21"]},
-    { category: "Hardware", items: ["KiCad", "AVR/C", "Arduino", "Raspberry Pi"]}
+    { category: "Languages", items: ["Python 3", "Java", "HTML/CSS", "SQL", "Node.js"] },
+    { category: "Hardware & Design", items: ["Arduino", "KiCad 10.0"] },
   ];
 
   const timeline = [
-      { date: "Jul 2026 - Present", event: "ZRA Labs", subtitle: "As a summer intern, I was tasked with creating a Computer-Vision Model that identifies different railway-related objects. It will operate as a prototype for ZRA's future demonstrations and product.", detail: "Built a six-class railway asset classifier in PyTorch, transfer-learned off a ResNet18 backbone, wrapped in a Streamlit app that stores captures offline and syncs them up over a bad link.", highlight: true},
-    { date: "Sep 2025 - Jun 2026", event: "Campion STEAM IC", subtitle: "Chapter Executive & Participant", detail: "Guided students in building projects under the Computer Science event. Built the Iris-Lite for 2026", highlight: false},
-    { date: "Sep 2025 - Jan 2026", event: "Brampton FBLC, JEC & TA", subtitle: "Systems Executive", detail: "Worked with a team of programmers to design the organization's landing page", highlight: false},
+    { date: "Jul 2026 - Present", event: "ZRA Labs — Summer Engineering Intern", subtitle: "Aided in the development of ZRA's image recognition project.", detail: null, highlight: true },
+    { date: "Sep 2025 - Jun 2026", event: "Campion STEAM IC — Chapter Executive & ICAC Participant", subtitle: "Created the Iris-Lite project (posted on GitHub) for this competition.", detail: "Guided other Computer Science participants to understand the fundamentals of programming, such as UML to help students visualize ideas.", highlight: false },
+    { date: "Jan 2024 - Aug 2025", event: "Brampton Library — Student Volunteer", subtitle: "Aided in the set-up, take down, and smooth operation of library programs.", detail: null, highlight: false },
+  ];
+
+  const certifications = [
+    { name: "PCEP-30-02 – Certified Entry-Level Programme", issuer: "Python Institute", date: "October 2024", credentialId: "71uV.9zuA.WXnV" },
+    { name: "IBM Python for Data Science 101", issuer: "IBM", date: "January 2022", credentialId: "01a86e73e11042a88346082fd3b48ee9" },
+    { name: "PCB Design with KiCad 9.0", issuer: "Dr. Peter Dalmaris", date: "In Progress" },
   ];
 
   return (
@@ -214,18 +283,18 @@ export default function About({ onBack }) {
           transform: translateY(0);
         }
 
-        .skill-group {
+        .reveal-left {
           border-left: 2px solid #25252a;
           padding-left: 16px;
           opacity: 0;
           transform: translateX(-16px);
           transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s ease;
         }
-        .skill-group.visible {
+        .reveal-left.visible {
           opacity: 1;
           transform: translateX(0);
         }
-        .skill-group:hover {
+        .reveal-left:hover {
           border-color: #00ff00;
         }
 
@@ -409,13 +478,20 @@ export default function About({ onBack }) {
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
 
             <InfoCard title="" fw={0}>
-              I am a developer and aspiring electrical engineer.
-              I build custom circuit boards, write low-level code,
-              and design software solutions to solve complex physical problems.
+              I am a high school student at St. Edmund Campion CSS and an aspiring
+              electrical engineer. I build custom circuit boards, write low-level
+              code, and design software solutions to solve real-world problems.
             </InfoCard>
 
-            <InfoCard title="My Developer Stack" fw = {18}>
+            <InfoCard title="Education" fw={9}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                {education.map((item, index) => (
+                  <EducationEntry key={index} item={item} />
+                ))}
+              </div>
+            </InfoCard>
 
+            <InfoCard title="Technical Skills" fw={16}>
               <div style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -438,6 +514,14 @@ export default function About({ onBack }) {
                     hoveredIndex={hoveredIndex}
                     setHoveredIndex={setHoveredIndex}
                   />
+                ))}
+              </div>
+            </InfoCard>
+
+            <InfoCard title="Certifications" fw={14}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                {certifications.map((cert, index) => (
+                  <CertificationEntry key={index} cert={cert} />
                 ))}
               </div>
             </InfoCard>

@@ -133,6 +133,13 @@ export default function Home() {
 
   const navigate = (target, projectSlug = null) => {
     if (transitioning || (target === displayView && projectSlug === selectedProjectSlug)) return;
+
+    if (target === "project" || (target === "projects" && displayView === "project")) {
+      setDisplayView(target);
+      setSelectedProjectSlug(projectSlug);
+      return;
+    }
+
     pendingView.current = target;
     pendingProjectSlug.current = projectSlug;
     setTransitioning(true);
