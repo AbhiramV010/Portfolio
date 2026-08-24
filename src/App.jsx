@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
 import About from "./pages/About";
 
 const SHUTTER_COLS = 14;
@@ -126,11 +127,14 @@ export default function Home() {
   const [displayView, setDisplayView] = useState("home");
   const [transitioning, setTransitioning] = useState(false);
   const pendingView = useRef("home");
+  const pendingProjectSlug = useRef(null);
+  const [selectedProjectSlug, setSelectedProjectSlug] = useState(null);
   const [now, setNow] = useState(new Date());
 
-  const navigate = (target) => {
-    if (transitioning || target === displayView) return;
+  const navigate = (target, projectSlug = null) => {
+    if (transitioning || (target === displayView && projectSlug === selectedProjectSlug)) return;
     pendingView.current = target;
+    pendingProjectSlug.current = projectSlug;
     setTransitioning(true);
   };
 
@@ -138,7 +142,10 @@ export default function Home() {
     if (!transitioning) return;
     const swapDelay = 500;
     const endDelay = 1000;
-    const swap = setTimeout(() => setDisplayView(pendingView.current), swapDelay);
+    const swap = setTimeout(() => {
+      setDisplayView(pendingView.current);
+      setSelectedProjectSlug(pendingProjectSlug.current);
+    }, swapDelay);
     const end = setTimeout(() => setTransitioning(false), endDelay);
     return () => {
       clearTimeout(swap);
@@ -164,7 +171,14 @@ export default function Home() {
   let pageBody;
 
   if (displayView === "projects") {
-    pageBody = <Projects onBack={() => navigate("home")} />;
+    pageBody = (
+      <Projects
+        onBack={() => navigate("home")}
+        onOpenProject={(slug) => navigate("project", slug)}
+      />
+    );
+  } else if (displayView === "project") {
+    pageBody = <ProjectDetail slug={selectedProjectSlug} onBack={() => navigate("projects")} />;
   } else if (displayView === "about") {
     pageBody = <About onBack={() => navigate("home")} />;
   }
