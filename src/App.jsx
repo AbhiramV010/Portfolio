@@ -232,13 +232,7 @@ export default function Home() {
             radial-gradient(circle at 85% 90%, rgba(0, 255, 0, 0.05), transparent 45%);
         }
 
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
         .home-card {
-          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .home-card:hover {
@@ -247,18 +241,16 @@ export default function Home() {
         }
 
         .home-nav {
-          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
 
         .home-status {
-          animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
         }
 
         .home-social a {
-          transition: transform 0.2s ease;
         }
         .home-social a:hover {
           transform: translateY(-3px);
+          transition: none !important;
         }
         .home-social a:hover svg {
           stroke: #00ff00;
