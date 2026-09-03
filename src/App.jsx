@@ -77,7 +77,20 @@ const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
 const RESUME_DRIVE_URL = "https://drive.google.com/file/d/1Aoqh2NOuuVGJBky6L_klo7wSXrcyaYZW/view?usp=sharing";
 
-export function FlapSegment({ targetChar, speed = 10 }) {
+const FLAP_SOUNDS = Array.from({ length: 5 }, () => {
+  const a = new Audio('/sounds/flap.mp3');
+  a.volume = 0.2;
+  return a;
+});
+let soundIdx = 0;
+const playFlapSound = () => {
+  const s = FLAP_SOUNDS[soundIdx];
+  s.currentTime = 0;
+  s.play().catch(() => {});
+  soundIdx = (soundIdx + 1) % FLAP_SOUNDS.length;
+};
+
+export function FlapSegment({ targetChar, speed = 10, sound = false }) {
   const [currentChar, setCurrentChar] = useState(" ");
 
   useEffect(() => {
@@ -91,6 +104,10 @@ export function FlapSegment({ targetChar, speed = 10 }) {
     const interval = setInterval(() => {
       setCurrentChar(FLAP_CHARS[currentIdx]);
 
+      if (sound) {
+        playFlapSound();
+      }
+
       if (currentIdx === targetIdx) {
         clearInterval(interval);
       } else {
@@ -99,17 +116,17 @@ export function FlapSegment({ targetChar, speed = 10 }) {
     }, speed);
 
     return () => clearInterval(interval);
-  }, [targetChar, speed]);
+  }, [targetChar, speed, sound]);
 
   return <span className="flap-cell">{currentChar}</span>;
 }
 
-export function FlapRow({ text, length = 22, speed = 50 }) {
+export function FlapRow({ text, length = 22, speed = 50, sound = false }) {
   const paddedText = text.padEnd(length, " ").slice(0, length);
   return (
     <div style={{ display: "flex", gap: "2px", justifyContent: "center" }}>
       {paddedText.split("").map((char, i) => (
-        <FlapSegment key={i} targetChar={char} speed={speed + i * 2} />
+        <FlapSegment key={i} targetChar={char} speed={speed + i * 2} sound={sound} />
       ))}
     </div>
   );
@@ -360,15 +377,15 @@ export default function Home() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <FlapRow text={getGreeting()} length={18} speed={20} />
+            <FlapRow text={getGreeting()} length={18} speed={20} sound={true} />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <FlapRow text="Abhiram Vadali" length={18} />
+            <FlapRow text="Abhiram Vadali" length={18} sound={true} />
           </div>
 
           <div style={{ marginTop: "10px", borderTop: "1px dashed #22222a", paddingTop: "20px" }}>
-            <FlapRow text={role} length={18} />
+            <FlapRow text={role} length={18} sound={true} />
           </div>
 
           <div className="home-social" style={{ display: "flex", gap: "1.5rem", alignItems: "center", justifyContent: "center", width: "100%", margin: "1rem 0" }}>

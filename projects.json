@@ -1,6 +1,6 @@
 [
   {
-    "name": "AutoTyper",
+    "name": "HumaTyper",
     "flapLength": 9,
     "desc": "An Electron desktop app that replays pasted text as real keystrokes into whatever window has focus. Keys are synthesised through the Win32 SendInput API, and Rhythm mode draws each interval from a model fitted to 1.1 million keystrokes from the 136M Keystrokes dataset.",
     "event": "2026",
@@ -16,7 +16,7 @@
     "actions": [
       {
         "label": "Source Code",
-        "href": "https://github.com/AbhiramV010/AutoTyper"
+        "href": "https://github.com/AbhiramV010/HumaTyper"
       }
     ]
   },
