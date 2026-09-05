@@ -77,17 +77,21 @@ const FLAP_CHARS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_-.[]{}*#@$";
 
 const RESUME_DRIVE_URL = "https://drive.google.com/file/d/1Aoqh2NOuuVGJBky6L_klo7wSXrcyaYZW/view?usp=sharing";
 
-const FLAP_SOUNDS = Array.from({ length: 5 }, () => {
-  const a = new Audio('/sounds/flap.mp3');
-  a.volume = 0.2;
+// Drop a click.mp3 file into src/assets/ for the flap sound to play.
+import clickSoundUrl from "./assets/click.mp3?url";
+
+const FLAP_SOUND_POOL = Array.from({ length: 6 }, () => {
+  const a = new Audio(clickSoundUrl);
+  a.volume = 0.25;
   return a;
 });
-let soundIdx = 0;
+let flapSoundIdx = 0;
+
 const playFlapSound = () => {
-  const s = FLAP_SOUNDS[soundIdx];
+  const s = FLAP_SOUND_POOL[flapSoundIdx];
   s.currentTime = 0;
   s.play().catch(() => {});
-  soundIdx = (soundIdx + 1) % FLAP_SOUNDS.length;
+  flapSoundIdx = (flapSoundIdx + 1) % FLAP_SOUND_POOL.length;
 };
 
 export function FlapSegment({ targetChar, speed = 10, sound = false }) {
