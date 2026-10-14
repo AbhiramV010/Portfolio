@@ -1,0 +1,231 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 7px 16px 5px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: var(--font-sign);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.06s ease;
+}
+
+.chip:hover {
+  color: var(--text);
+  border-color: var(--text-3);
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--line);
+  color: var(--line);
+  background: color-mix(in srgb, var(--line) 8%, transparent);
+}
+
+.chip:active {
+  transform: translateY(1px);
+}
+
+.board {
+  --pad-x: 20px;
+  --cols: 44px 28px minmax(140px, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) 24px;
+  --stop-x: calc(var(--pad-x) + 44px + 14px + 14px);
+}
+
+.board-total {
+  opacity: 0.7;
+}
+
+.board-cols {
+  display: grid;
+  grid-template-columns: var(--cols);
+  column-gap: 14px;
+  padding: 12px var(--pad-x) 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-3);
+  font-family: var(--font-sign);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+}
+
+.col-stack {
+  text-align: right;
+}
+
+.stops {
+  list-style: none;
+  padding: 0;
+}
+
+.stop {
+  position: relative;
+  animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(var(--n, 0) * 45ms + 150ms);
+}
+
+.stop::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--stop-x) - 2px);
+  width: 4px;
+  background: var(--line);
+}
+
+.stop.is-first::before {
+  top: 50%;
+}
+
+.stop.is-last::before {
+  bottom: 50%;
+}
+
+.stop.is-first.is-last::before {
+  display: none;
+}
+
+.stop-btn {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--cols);
+  column-gap: 14px;
+  align-items: center;
+  padding: 18px var(--pad-x);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.stop-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.stop-no {
+  font-family: var(--font-sign);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+
+.stop-marker {
+  justify-self: center;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 4px solid var(--line);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.stop-btn:hover .stop-marker {
+  background: var(--line);
+  transform: scale(1.15);
+  animation: ripple 1.2s ease-out infinite;
+}
+
+@keyframes ripple {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--line) 55%, transparent); }
+  to { box-shadow: 0 0 0 12px transparent; }
+}
+
+.stop--interchange .stop-marker {
+  width: 26px;
+  height: 26px;
+  background: var(--line);
+  box-shadow: 0 0 0 4px var(--surface);
+}
+
+.stop-name {
+  min-width: 0;
+  font-family: var(--font-sign);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.stop-meta {
+  min-width: 0;
+  font-family: var(--font-sign);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+
+.stop-stack {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tag--more {
+  color: var(--text-3);
+  border-color: var(--border);
+}
+
+.stop-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--text-3);
+  transition: color 0.15s ease, translate 0.15s ease;
+}
+
+.stop-btn:hover .stop-arrow {
+  color: var(--line);
+  translate: 3px 0;
+}
+
+.board-empty {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--text-3);
+  font-family: var(--font-sign);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+}
+
+@media (max-width: 860px) {
+  .board {
+    --cols: 44px 28px minmax(0, 1.4fr) minmax(0, 1fr) 24px;
+  }
+  .col-stack,
+  .stop-stack {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .board {
+    --pad-x: 14px;
+    --stop-x: calc(var(--pad-x) + 14px);
+  }
+  .board-cols {
+    display: none;
+  }
+  .stop-btn {
+    grid-template-columns: 28px minmax(0, 1fr) 24px;
+    grid-template-areas:
+      "marker no arrow"
+      "marker name arrow"
+      "marker meta arrow";
+    row-gap: 3px;
+  }
+  .stop-marker { grid-area: marker; }
+  .stop-no { grid-area: no; font-size: 0.68rem; }
+  .stop-name { grid-area: name; }
+  .stop-meta { grid-area: meta; font-size: 0.68rem; }
+  .stop-arrow { grid-area: arrow; }
+}

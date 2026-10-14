@@ -1,0 +1,316 @@
+.home-page {
+  justify-content: flex-start;
+  gap: clamp(32px, 6vh, 56px);
+  padding-bottom: 32px;
+}
+
+.role-screen {
+  position: relative;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: min(100%, 36rem);
+  margin-top: 8px;
+  padding: 14px 22px 14px 18px;
+  overflow: hidden;
+  background: #040405;
+  border: 1px solid #2a2a2f;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.95),
+    0 0 0 4px #0e0e11,
+    0 18px 36px -22px rgba(255, 199, 44, 0.3);
+}
+
+.role-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.06), transparent 38%);
+}
+
+.role-arrow {
+  flex: none;
+  width: 36px;
+  height: 28px;
+  fill: var(--line-1);
+  filter: drop-shadow(0 0 4px rgba(255, 199, 44, 0.75));
+  animation: arrow-blink 1.6s steps(1, end) infinite;
+}
+
+.role-text {
+  min-width: 0;
+  font-family: "Doto", var(--font-sign);
+  font-weight: 800;
+  font-variation-settings: "ROND" 100;
+  font-size: clamp(1.3rem, 4vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--line-1);
+  text-shadow: 0 0 6px rgba(255, 199, 44, 0.6), 0 0 18px rgba(255, 199, 44, 0.25);
+  overflow-wrap: anywhere;
+  animation: led-on 0.5s steps(1, end) both;
+}
+
+@keyframes led-on {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  38% { opacity: 0.15; }
+  58%, 100% { opacity: 1; }
+}
+
+@keyframes arrow-blink {
+  0%, 100% { opacity: 1; }
+  55% { opacity: 0.15; }
+}
+
+.ways {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.way {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 20px 20px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  font-family: var(--font-sign);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  letter-spacing: 0.1em;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.06s ease;
+}
+
+.way-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.way > svg {
+  flex: none;
+  width: 1.2em;
+  height: 1.2em;
+  color: var(--text-3);
+  transition: color 0.15s ease, translate 0.15s ease;
+}
+
+.way:hover {
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--line) 6%, var(--surface));
+}
+
+.way:hover > svg:last-child {
+  color: var(--line);
+  translate: 4px 0;
+}
+
+.way:active {
+  transform: translateY(1px);
+}
+
+.home-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+}
+
+.socials {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px 7px 12px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-2);
+  text-decoration: none;
+  font-family: var(--font-sign);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.social svg {
+  width: 20px;
+  height: 20px;
+}
+
+.social:hover {
+  color: var(--line-1);
+  border-color: var(--line-1);
+  transform: translateY(-2px);
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--text-3);
+  font-family: var(--font-sign);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+}
+
+@media (max-width: 720px) {
+  .ways {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.track {
+  position: relative;
+  flex: none;
+  height: clamp(58px, 8vw, 74px);
+  overflow: hidden;
+}
+
+.track::before,
+.track::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.track::before {
+  bottom: 3px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--border) 0 2px, transparent 2px 16px);
+}
+
+.track::after {
+  bottom: 10px;
+  height: 2px;
+  background: var(--border-strong);
+}
+
+.train {
+  position: absolute;
+  left: 0;
+  bottom: 11px;
+  width: max-content;
+  transform: translateX(-100%);
+  will-change: transform;
+  animation: train-run 20s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite;
+}
+
+.train svg {
+  display: block;
+  height: clamp(30px, 4.4vw, 46px);
+  width: auto;
+}
+
+.train::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  bottom: 4px;
+  width: 38%;
+  height: 55%;
+  background: linear-gradient(90deg, transparent, rgba(255, 199, 44, 0.09));
+}
+
+.train-body {
+  fill: #14141a;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.train-stripe {
+  fill: var(--line-1);
+  opacity: 0.85;
+}
+
+.train-door {
+  fill: none;
+  stroke: var(--border-strong);
+}
+
+.train-glass {
+  fill: rgba(255, 199, 44, 0.16);
+}
+
+.train-wheel {
+  fill: var(--border-strong);
+}
+
+.train-light {
+  fill: #fff;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+}
+
+@keyframes train-run {
+  0% { transform: translateX(-100%); }
+  40%, 100% { transform: translateX(100vw); }
+}
+
+.sysmap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sysmap-route {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.28;
+  animation: sysmap-draw 2.6s cubic-bezier(0.4, 0, 0.2, 1) calc(0.3s + var(--i) * 0.35s) forwards;
+}
+
+.sysmap-stop {
+  fill: var(--bg);
+  stroke: var(--line);
+  stroke-width: 3;
+  opacity: 0;
+  animation: sysmap-fade 0.6s ease calc(1.8s + var(--i) * 0.35s) forwards;
+}
+
+.sysmap-light {
+  fill: var(--line-1);
+  filter: drop-shadow(0 0 6px var(--line-1));
+  opacity: 0;
+  animation: sysmap-light-in 0.6s ease 3s forwards;
+}
+
+@keyframes sysmap-light-in {
+  to { opacity: 1; }
+}
+
+@keyframes sysmap-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes sysmap-fade {
+  to { opacity: 0.4; }
+}
+
+@media (max-width: 720px) {
+  .sysmap {
+    opacity: 0.55;
+  }
+}
