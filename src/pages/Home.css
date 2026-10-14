@@ -173,6 +173,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
 .track {
   position: relative;
   flex: none;
@@ -201,13 +202,15 @@
 }
 
 .train {
+  --cycle: 28s;
+  --lead: 2s;
   position: absolute;
   left: 0;
   bottom: 11px;
   width: max-content;
   transform: translateX(-100%);
   will-change: transform;
-  animation: train-run 20s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite;
+  animation: train-run var(--cycle) linear var(--lead) infinite both;
 }
 
 .train svg {
@@ -224,6 +227,7 @@
   width: 38%;
   height: 55%;
   background: linear-gradient(90deg, transparent, rgba(255, 199, 44, 0.09));
+  animation: train-streak var(--cycle) linear var(--lead) infinite both;
 }
 
 .train-body {
@@ -238,8 +242,48 @@
 }
 
 .train-door {
-  fill: none;
+  fill: #14141a;
   stroke: var(--border-strong);
+}
+
+.train-doorway {
+  fill: #ffd466;
+  opacity: 0.75;
+}
+
+.train-leaf {
+  transform-box: fill-box;
+  animation: train-leaf var(--cycle) linear var(--lead) infinite both;
+}
+
+.train-leaf-l {
+  transform-origin: left center;
+}
+
+.train-leaf-r {
+  transform-origin: right center;
+}
+
+.pax {
+  fill: #d9d9df;
+  opacity: 0;
+  animation-duration: var(--cycle);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-delay: calc(var(--lead) + var(--t));
+}
+
+.pax-off {
+  animation-name: pax-off;
+}
+
+.pax-on {
+  animation-name: pax-on;
+}
+
+.pax-body {
+  animation: pax-bob 0.45s ease-in-out infinite alternate;
 }
 
 .train-glass {
@@ -255,9 +299,51 @@
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
 }
 
+/* Arrive and brake to the centre, dwell with doors open, then pull out. */
 @keyframes train-run {
-  0% { transform: translateX(-100%); }
-  40%, 100% { transform: translateX(100vw); }
+  0% {
+    transform: translateX(-100%);
+    animation-timing-function: cubic-bezier(0.15, 0.65, 0.25, 1);
+  }
+  15%,
+  55% {
+    transform: translateX(calc(50vw - 50%));
+    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.4);
+  }
+  70%,
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes train-streak {
+  0% { opacity: 1; }
+  13%, 55% { opacity: 0; }
+  62%, 100% { opacity: 1; }
+}
+
+@keyframes train-leaf {
+  0%, 15.5% { transform: scaleX(1); }
+  18.5%, 50.5% { transform: scaleX(0.08); }
+  53.5%, 100% { transform: scaleX(1); }
+}
+
+@keyframes pax-off {
+  0% { opacity: 0; transform: translateX(0); }
+  1.2%, 8.8% { opacity: 1; }
+  9.5%, 100% { opacity: 0; transform: translateX(var(--dx)); }
+}
+
+@keyframes pax-on {
+  0% { opacity: 0; transform: translateX(var(--dx)); }
+  1.2% { opacity: 1; }
+  8.4% { opacity: 1; transform: translateX(0); }
+  9.2%, 100% { opacity: 0; transform: translateX(0); }
+}
+
+@keyframes pax-bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-0.7px); }
 }
 
 .sysmap {
