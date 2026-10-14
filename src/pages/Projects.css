@@ -108,6 +108,7 @@
 
 .stop-btn:hover {
   background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .stop-no {
@@ -130,13 +131,6 @@
 
 .stop-btn:hover .stop-marker {
   background: var(--line);
-  transform: scale(1.15);
-  animation: ripple 1.2s ease-out infinite;
-}
-
-@keyframes ripple {
-  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--line) 55%, transparent); }
-  to { box-shadow: 0 0 0 12px transparent; }
 }
 
 .stop--interchange .stop-marker {
