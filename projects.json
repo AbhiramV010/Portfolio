@@ -26,7 +26,7 @@
     "desc": "An alarm clock on a Raspberry Pi Pico W that refuses to go quiet until you win a memory game, dealing out a growing sequence across four LEDs and buttons until five rounds land in a row. Time comes from the NTP pool over WiFi, and the four-digit display runs on a hand-rolled TM1637 driver.",
     "event": "2026",
     "year": 2026,
-    "mediaSrc": "https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j",
+    "mediaSrc": "https://www.youtube.com/embed/zBrcXpSimxI",
     "stack": [
       "C++",
       "Arduino",
