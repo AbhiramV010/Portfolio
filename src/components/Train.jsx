@@ -56,8 +56,6 @@ function Car({ x, head }) {
       ))}
       {head && <path className="train-glass" d="M162 11H167C176 11 182 17 185 27H162Z" />}
       {head && <circle className="train-light" cx="187" cy="35" r="2" />}
-      <circle className="train-wheel" cx="28" cy="49" r="4" />
-      <circle className="train-wheel" cx="162" cy="49" r="4" />
     </g>
   );
 }
