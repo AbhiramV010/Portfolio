@@ -21,7 +21,7 @@ const LINES = [
   },
 ];
 
-// Faint transit-map backdrop: routes draw in, then a light runs along the first one.
+// Faint static transit-map backdrop.
 export default function SystemMap() {
   return (
     <svg
@@ -30,17 +30,14 @@ export default function SystemMap() {
       preserveAspectRatio="xMaxYMin slice"
       aria-hidden="true"
     >
-      {LINES.map(({ line, d, stations }, i) => (
-        <g key={line} className={`line-${line}`} style={{ "--i": i }}>
-          <path className="sysmap-route" d={d} pathLength="1" />
+      {LINES.map(({ line, d, stations }) => (
+        <g key={line} className={`line-${line}`}>
+          <path className="sysmap-route" d={d} />
           {stations.map(([cx, cy]) => (
             <circle key={`${cx}-${cy}`} className="sysmap-stop" cx={cx} cy={cy} r="8" />
           ))}
         </g>
       ))}
-      <circle className="sysmap-light" r="5">
-        <animateMotion begin="3s" dur="14s" repeatCount="indefinite" path={LINES[0].d} />
-      </circle>
     </svg>
   );
 }

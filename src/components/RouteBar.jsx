@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import LineMark from "./LineMark";
 import { Arrow } from "./icons";
 import { RESUME_DRIVE_URL, ROUTE } from "../lines";
@@ -22,34 +22,13 @@ function useRouteSequence(current) {
   return phase;
 }
 
-// Publishes page scroll progress (0 to 1) as --scroll for the bar's underline.
-function useScrollProgress(ref) {
-  useEffect(() => {
-    const el = ref.current;
-    const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      el.style.setProperty("--scroll", max > 0 ? window.scrollY / max : 0);
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    const resize = new ResizeObserver(update);
-    resize.observe(document.body);
-    return () => {
-      window.removeEventListener("scroll", update);
-      resize.disconnect();
-    };
-  }, [ref]);
-}
-
 export default function RouteBar({ current, line, onNavigate }) {
-  const barRef = useRef(null);
-  useScrollProgress(barRef);
   const phase = useRouteSequence(current);
   const last = ROUTE.length - 1;
   const progress = Math.min(phase, last) / last;
 
   return (
-    <header className="routebar" ref={barRef}>
+    <header className="routebar">
       <div className="routebar-inner">
         <button type="button" className="brand" onClick={() => onNavigate("home")} aria-label="Abhiram Vadali, home">
           <LineMark line={line} />

@@ -168,16 +168,6 @@ a {
   border-bottom: 1px solid var(--border);
 }
 
-.routebar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  height: 2px;
-  width: calc(var(--scroll, 0) * 100%);
-  background: var(--line);
-}
-
 .routebar-inner {
   max-width: var(--maxw);
   margin: 0 auto;
