@@ -64,6 +64,12 @@ function Role() {
 
 const SOCIALS = [
   {
+    label: "Email",
+    href: "mailto:abhiram.vadali@gmail.com",
+    paths: ["m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"],
+    extra: <rect width="20" height="16" x="2" y="4" rx="2" />,
+  },
+  {
     label: "GitHub",
     href: "https://github.com/AbhiramV010/",
     paths: [
@@ -120,7 +126,11 @@ export default function Home({ onNavigate, onResume }) {
           <ul className="socials">
             {SOCIALS.map(({ label, href, paths, extra }) => (
               <li key={label}>
-                <a className="social" href={href} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="social"
+                  href={href}
+                  {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
