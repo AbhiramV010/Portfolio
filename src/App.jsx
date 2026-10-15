@@ -8,6 +8,7 @@ import Arrival from "./components/Arrival";
 import ResumeModal from "./components/ResumeModal";
 import { PROJECTS } from "./data/projects";
 import { ROUTE, VIEW_LINE, VIEW_STOP } from "./lines";
+import { metaFor, parsePath, pathFor } from "./routes";
 import { playClick } from "./sound";
 
 const SWAP_MS = 225;
@@ -19,21 +20,23 @@ const arrivalLabel = (view, slug) =>
     : ROUTE.find((stop) => stop.key === VIEW_STOP[view])?.label;
 
 export default function App() {
-  const [displayView, setDisplayView] = useState("home");
-  const [selectedProjectSlug, setSelectedProjectSlug] = useState(null);
+  const [initial] = useState(() => parsePath(window.location.pathname));
+  const [displayView, setDisplayView] = useState(initial.view);
+  const [selectedProjectSlug, setSelectedProjectSlug] = useState(initial.slug);
   const [transitioning, setTransitioning] = useState(false);
   const [sweepLine, setSweepLine] = useState(1);
   const [arrival, setArrival] = useState(null);
   const [resumeOpen, setResumeOpen] = useState(false);
-  const pendingView = useRef("home");
-  const pendingProjectSlug = useRef(null);
+  const pendingView = useRef(initial.view);
+  const pendingProjectSlug = useRef(initial.slug);
   const mainRef = useRef(null);
-  const focusedKey = useRef("home:null");
+  const focusedKey = useRef(`${initial.view}:${initial.slug}`);
 
   const show = (view, slug) => {
     setDisplayView(view);
     setSelectedProjectSlug(slug);
     setArrival({ id: Date.now(), label: arrivalLabel(view, slug) });
+    window.history.pushState(null, "", pathFor(view, slug));
     window.scrollTo(0, 0);
   };
 
@@ -59,6 +62,7 @@ export default function App() {
       setDisplayView(pendingView.current);
       setSelectedProjectSlug(pendingProjectSlug.current);
       setArrival({ id: Date.now(), label: arrivalLabel(pendingView.current, pendingProjectSlug.current) });
+      window.history.pushState(null, "", pathFor(pendingView.current, pendingProjectSlug.current));
       window.scrollTo(0, 0);
     }, SWAP_MS);
     const end = setTimeout(() => setTransitioning(false), END_MS);
@@ -67,6 +71,28 @@ export default function App() {
       clearTimeout(end);
     };
   }, [transitioning]);
+
+  // Canonicalise the URL we landed on (trailing slash, unknown project slug).
+  useEffect(() => {
+    window.history.replaceState(null, "", pathFor(initial.view, initial.slug));
+  }, [initial]);
+
+  // Browser back/forward: swap the view straight away.
+  useEffect(() => {
+    const onPop = () => {
+      const { view, slug } = parsePath(window.location.pathname);
+      setDisplayView(view);
+      setSelectedProjectSlug(slug);
+      setArrival({ id: Date.now(), label: arrivalLabel(view, slug) });
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  useEffect(() => {
+    document.title = metaFor(displayView, selectedProjectSlug).title;
+  }, [displayView, selectedProjectSlug]);
 
   // Move keyboard focus to the new page so screen readers announce it.
   useEffect(() => {

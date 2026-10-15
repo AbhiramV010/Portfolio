@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Fascia from "../components/Fascia";
 import Train from "../components/Train";
+import Link from "../components/Link";
 import StatsSign from "../components/StatsSign";
 import SystemMap from "../components/SystemMap";
 import { Arrow } from "../components/icons";
+import { pathFor } from "../routes";
 import "./Home.css";
 
 const ROLES = ["High School Junior", "embedded systems", "software developer", "aircraft", "aspiring engineer"];
@@ -89,7 +91,7 @@ const SOCIALS = [
 
 const WAYS = [
   { key: "projects", label: "Projects", line: 2 },
-  { key: "about", label: "About Me", line: 3 },
+  { key: "about", label: "About Me", line: 5 },
 ];
 
 export default function Home({ onNavigate, onResume }) {
@@ -103,12 +105,12 @@ export default function Home({ onNavigate, onResume }) {
       <div className="page home-page">
         <nav className="ways" aria-label="Destinations">
           {WAYS.map(({ key, label, line }) => (
-            <button key={key} type="button" className={`way line-${line}`} onClick={() => onNavigate(key)}>
+            <Link key={key} href={pathFor(key)} className={`way line-${line}`} onNavigate={() => onNavigate(key)}>
               <span className="way-label">{label}</span>
               <Arrow />
-            </button>
+            </Link>
           ))}
-          <button type="button" className="way line-4" onClick={onResume}>
+          <button type="button" className="way line-streetcar" onClick={onResume}>
             <span className="way-label">Resume</span>
             <Arrow />
           </button>

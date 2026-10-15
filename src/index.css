@@ -49,8 +49,8 @@
 
   --line-1: #ffc72c;
   --line-2: #00a651;
-  --line-3: #3399f0;
-  --line-4: #c06fb4;
+  --streetcar: #e8402f;
+  --line-5: #f58a2a;
 
   --line: var(--line-1);
 
@@ -65,8 +65,8 @@
 
 .line-1 { --line: var(--line-1); }
 .line-2 { --line: var(--line-2); }
-.line-3 { --line: var(--line-3); }
-.line-4 { --line: var(--line-4); }
+.line-streetcar { --line: var(--streetcar); }
+.line-5 { --line: var(--line-5); }
 
 *,
 *::before,
@@ -179,6 +179,7 @@ a {
 }
 
 .brand {
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 12px;

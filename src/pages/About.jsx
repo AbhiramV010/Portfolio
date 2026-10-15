@@ -126,7 +126,7 @@ export default function About({ onBack }) {
 
   return (
     <>
-      <Fascia line={3} title="About Me" />
+      <Fascia line={5} title="About Me" />
 
       <div className="page">
         <BackButton onBack={onBack} />

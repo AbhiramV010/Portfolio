@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import Fascia from "../components/Fascia";
 import BackButton from "../components/BackButton";
 import { Arrow } from "../components/icons";
+import Link from "../components/Link";
+import { pathFor } from "../routes";
 import { PROJECTS, YEARS } from "../data/projects";
 import "./Projects.css";
 
@@ -17,7 +19,7 @@ function Stop({ project, number, index, first, last, onOpen }) {
       className={`stop${accolade ? " stop--interchange" : ""}${first ? " is-first" : ""}${last ? " is-last" : ""}`}
       style={{ "--n": index }}
     >
-      <button type="button" className="stop-btn" onClick={onOpen}>
+      <Link href={pathFor("project", project.slug)} className="stop-btn" onNavigate={onOpen}>
         <span className="stop-no">{String(number).padStart(2, "0")}</span>
         <span className="stop-marker" aria-hidden="true" />
         <span className="stop-name">{name}</span>
@@ -27,7 +29,7 @@ function Stop({ project, number, index, first, last, onOpen }) {
           {extra > 0 && <span className="tag tag--more">+{extra}</span>}
         </span>
         <Arrow className="stop-arrow" />
-      </button>
+      </Link>
     </li>
   );
 }

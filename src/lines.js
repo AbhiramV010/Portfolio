@@ -4,10 +4,10 @@ export const RESUME_PREVIEW_URL = "https://drive.google.com/file/d/1Aoqh2NOuuVGJ
 export const ROUTE = [
   { key: "home", label: "Home", line: 1 },
   { key: "projects", label: "Projects", line: 2 },
-  { key: "about", label: "About Me", line: 3 },
-  { key: "resume", label: "Resume", line: 4, modal: true },
+  { key: "about", label: "About Me", line: 5 },
+  { key: "resume", label: "Resume", line: "streetcar", modal: true },
 ];
 
 // `project` (detail) shares the Projects stop and line.
 export const VIEW_STOP = { home: "home", projects: "projects", project: "projects", about: "about" };
-export const VIEW_LINE = { home: 1, projects: 2, project: 2, about: 3 };
+export const VIEW_LINE = { home: 1, projects: 2, project: 2, about: 5 };

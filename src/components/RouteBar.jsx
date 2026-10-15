@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import LineMark from "./LineMark";
+import Link from "./Link";
 import { ROUTE } from "../lines";
+import { pathFor } from "../routes";
 
 const FLASH_MS = 1500;
 const SKIP_MS = 350;
@@ -29,10 +31,10 @@ export default function RouteBar({ current, line, onNavigate, onResume }) {
   return (
     <header className="routebar">
       <div className="routebar-inner">
-        <button type="button" className="brand" onClick={() => onNavigate("home")} aria-label="Abhiram Vadali, home">
+        <Link href="/" className="brand" onNavigate={() => onNavigate("home")} aria-label="Abhiram Vadali, home">
           <LineMark line={line} />
           <span className="brand-name">Abhiram Vadali</span>
-        </button>
+        </Link>
 
         <nav aria-label="Site map">
           <ol className="routemap" style={{ "--progress": progress }}>
@@ -50,14 +52,20 @@ export default function RouteBar({ current, line, onNavigate, onResume }) {
 
               return (
                 <li key={stop.key} className={`${isCurrent ? "is-current" : ""}${seq}`.trim() || undefined}>
-                  <button
-                    type="button"
-                    className="rm-stop"
-                    onClick={() => (stop.modal ? onResume() : onNavigate(stop.key))}
-                    aria-current={isCurrent ? "page" : undefined}
-                  >
-                    {inner}
-                  </button>
+                  {stop.modal ? (
+                    <button type="button" className="rm-stop" onClick={onResume}>
+                      {inner}
+                    </button>
+                  ) : (
+                    <Link
+                      href={pathFor(stop.key)}
+                      className="rm-stop"
+                      onNavigate={() => onNavigate(stop.key)}
+                      aria-current={isCurrent ? "page" : undefined}
+                    >
+                      {inner}
+                    </Link>
+                  )}
                 </li>
               );
             })}
