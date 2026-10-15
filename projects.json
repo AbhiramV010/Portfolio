@@ -5,7 +5,7 @@
     "desc": "An Electron desktop app that replays pasted text as real keystrokes into whatever window has focus. Keys are synthesised through the Win32 SendInput API, and Rhythm mode draws each interval from a model fitted to 1.1 million keystrokes from the 136M Keystrokes dataset.",
     "event": "2026",
     "year": 2026,
-    "mediaSrc": "https://www.youtube.com/embed/2Gg6Seob5Mg?si=_j7NInFeVUWIhP3j",
+    "mediaSrc": "https://www.youtube.com/embed/JglzOtT29hQ",
     "stack": [
       "TypeScript",
       "Electron",
@@ -17,6 +17,46 @@
       {
         "label": "Source Code",
         "href": "https://github.com/AbhiramV010/HumaTyper"
+      }
+    ]
+  },
+  {
+    "name": "pocketChange",
+    "flapLength": 12,
+    "desc": "A Python trading bot for a self-custody Solana wallet holding about $20 USDC. Signals come from moving-average trend rules, a model trained on candle history, or plain DCA, and every Jupiter swap is simulated first so the input, slippage floor and fees get checked before anything is sent. Trade size, slippage and gas reserve are hard limits, and dropping below a minimum equity sets a halt that only a manual reset clears. A Streamlit dashboard runs as a separate process with a pause switch. Backtests showed no edge after fees, so it runs as an experiment.",
+    "event": "2026",
+    "year": 2026,
+    "stack": [
+      "Python",
+      "Streamlit",
+      "Solana",
+      "Jupiter API",
+      "SQLite"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/pocketChange"
+      }
+    ]
+  },
+  {
+    "name": "PRC Data Challenge",
+    "flapLength": 18,
+    "desc": "Our entry for the EUROCONTROL PRC Data Challenge 2026, built with Kevin Renjith as team knowledgeable-village. The task is predicting taxi-out time for departures at 10 major European airports. One script, prc.py, runs the whole loop: it pulls the parquet data from the OpenSky buckets, builds traffic features like departure and arrival counts in surrounding time windows and stand occupancy, validates, and uploads submissions. The model also estimates the odds that an airport logged the scheduled time as off-block, since those rows produce huge targets that wreck the RMSE.",
+    "event": "PRC Data Challenge 2026",
+    "year": 2026,
+    "stack": [
+      "Python",
+      "pandas",
+      "NumPy",
+      "PyArrow",
+      "MinIO"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/prc_data_challenge"
       }
     ]
   },
@@ -37,6 +77,25 @@
       {
         "label": "Source Code",
         "href": "https://github.com/AbhiramV010/GameClock"
+      }
+    ]
+  },
+  {
+    "name": "CaughtLackin",
+    "flapLength": 12,
+    "desc": "An Android study app that watches you through the front camera and phone sensors, then texts your friends when you slack off. MediaPipe face and pose landmarkers run on-device to catch you picking up the phone, leaving the app, turning to talk to someone, or walking away from the desk. Each strike starts a 15-second alarm, and if you don't fix it in time, a shame message goes to a random member of your 3-5 person squad.",
+    "event": "2026",
+    "year": 2026,
+    "stack": [
+      "Kotlin",
+      "Android",
+      "CameraX",
+      "MediaPipe"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/CaughtLackin"
       }
     ]
   },
@@ -102,7 +161,11 @@
     "actions": [
       {
         "label": "Source Code",
-        "href": "https://github.com/AbhiramV010/Iris-Lite"
+        "href": "https://github.com/AbhiramV010/Iris_Lite"
+      },
+      {
+        "label": "Circuit Source",
+        "href": "https://github.com/AbhiramV010/CarbonAwareCharge"
       },
       {
         "label": "Website",

@@ -16,7 +16,7 @@ function Stop({ project, number, index, first, last, onOpen }) {
 
   return (
     <li
-      className={`stop${accolade ? " stop--interchange" : ""}${first ? " is-first" : ""}${last ? " is-last" : ""}`}
+      className={`stop${first ? " is-first" : ""}${last ? " is-last" : ""}`}
       style={{ "--n": index }}
     >
       <Link href={pathFor("project", project.slug)} className="stop-btn" onNavigate={onOpen}>
