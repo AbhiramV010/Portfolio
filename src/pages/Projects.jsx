@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import Fascia from "../components/Fascia";
 import BackButton from "../components/BackButton";
-import { Arrow } from "../components/icons";
+import { Arrow, Trophy } from "../components/icons";
 import Link from "../components/Link";
 import { pathFor } from "../routes";
 import { PROJECTS, YEARS } from "../data/projects";
@@ -10,7 +10,7 @@ import "./Projects.css";
 const ALL = "All";
 
 function Stop({ project, number, index, first, last, onOpen }) {
-  const { name, accolade, year, stack = [] } = project;
+  const { name, accolade, podium, year, stack = [] } = project;
   const shown = stack.slice(0, 2);
   const extra = stack.length - shown.length;
 
@@ -20,7 +20,10 @@ function Stop({ project, number, index, first, last, onOpen }) {
       style={{ "--n": index }}
     >
       <Link href={pathFor("project", project.slug)} className="stop-btn" onNavigate={onOpen}>
-        <span className="stop-no">{String(number).padStart(2, "0")}</span>
+        <span className="stop-no">
+          {String(number).padStart(2, "0")}
+          {podium && <Trophy className="stop-trophy" title="Podium finish" />}
+        </span>
         <span className="stop-marker" aria-hidden="true" />
         <span className="stop-name">{name}</span>
         <span className="stop-meta">{year}{accolade ? ` · ${accolade}` : ""}</span>

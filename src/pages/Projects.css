@@ -114,10 +114,21 @@
 }
 
 .stop-no {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--font-sign);
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: var(--text-3);
+  white-space: nowrap;
+}
+
+.stop-trophy {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: var(--line);
 }
 
 .stop-marker {

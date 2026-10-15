@@ -1,31 +1,11 @@
 [
   {
-    "name": "HumaTyper",
-    "flapLength": 9,
-    "desc": "An Electron desktop app that replays pasted text as real keystrokes into whatever window has focus. Keys are synthesised through the Win32 SendInput API, and Rhythm mode draws each interval from a model fitted to 1.1 million keystrokes from the 136M Keystrokes dataset.",
-    "event": "2026",
-    "year": 2026,
-    "mediaSrc": "https://www.youtube.com/embed/JglzOtT29hQ",
-    "stack": [
-      "TypeScript",
-      "Electron",
-      "Node.js",
-      "PowerShell",
-      "Win32 SendInput"
-    ],
-    "actions": [
-      {
-        "label": "Source Code",
-        "href": "https://github.com/AbhiramV010/HumaTyper"
-      }
-    ]
-  },
-  {
     "name": "pocketChange",
     "flapLength": 12,
     "desc": "A Python trading bot for a self-custody Solana wallet holding about $20 USDC. Signals come from moving-average trend rules, a model trained on candle history, or plain DCA, and every Jupiter swap is simulated first so the input, slippage floor and fees get checked before anything is sent. Trade size, slippage and gas reserve are hard limits, and dropping below a minimum equity sets a halt that only a manual reset clears. A Streamlit dashboard runs as a separate process with a pause switch. Backtests showed no edge after fees, so it runs as an experiment.",
     "event": "2026",
     "year": 2026,
+    "started": "2026-10-11",
     "stack": [
       "Python",
       "Streamlit",
@@ -41,31 +21,12 @@
     ]
   },
   {
-    "name": "PRC Data Challenge",
-    "flapLength": 18,
-    "desc": "Our entry for the EUROCONTROL PRC Data Challenge 2026, built with Kevin Renjith as team knowledgeable-village. The task is predicting taxi-out time for departures at 10 major European airports. One script, prc.py, runs the whole loop: it pulls the parquet data from the OpenSky buckets, builds traffic features like departure and arrival counts in surrounding time windows and stand occupancy, validates, and uploads submissions. The model also estimates the odds that an airport logged the scheduled time as off-block, since those rows produce huge targets that wreck the RMSE.",
-    "event": "PRC Data Challenge 2026",
-    "year": 2026,
-    "stack": [
-      "Python",
-      "pandas",
-      "NumPy",
-      "PyArrow",
-      "MinIO"
-    ],
-    "actions": [
-      {
-        "label": "Source Code",
-        "href": "https://github.com/AbhiramV010/prc_data_challenge"
-      }
-    ]
-  },
-  {
     "name": "GameClock",
     "flapLength": 9,
     "desc": "An alarm clock on a Raspberry Pi Pico W that refuses to go quiet until you win a memory game, dealing out a growing sequence across four LEDs and buttons until five rounds land in a row. Time comes from the NTP pool over WiFi, and the four-digit display runs on a hand-rolled TM1637 driver.",
     "event": "2026",
     "year": 2026,
+    "started": "2026-05-17",
     "mediaSrc": "https://www.youtube.com/embed/zBrcXpSimxI",
     "stack": [
       "C++",
@@ -86,6 +47,7 @@
     "desc": "An Android study app that watches you through the front camera and phone sensors, then texts your friends when you slack off. MediaPipe face and pose landmarkers run on-device to catch you picking up the phone, leaving the app, turning to talk to someone, or walking away from the desk. Each strike starts a 15-second alarm, and if you don't fix it in time, a shame message goes to a random member of your 3-5 person squad.",
     "event": "2026",
     "year": 2026,
+    "started": "2026-09-28",
     "stack": [
       "Kotlin",
       "Android",
@@ -100,11 +62,55 @@
     ]
   },
   {
+    "name": "PRC Data Challenge",
+    "flapLength": 18,
+    "desc": "Our entry for the EUROCONTROL PRC Data Challenge 2026, built with Kevin Renjith as team knowledgeable-village. The task is predicting taxi-out time for departures at 10 major European airports. One script, prc.py, runs the whole loop: it pulls the parquet data from the OpenSky buckets, builds traffic features like departure and arrival counts in surrounding time windows and stand occupancy, validates, and uploads submissions. The model also estimates the odds that an airport logged the scheduled time as off-block, since those rows produce huge targets that wreck the RMSE.",
+    "event": "PRC Data Challenge 2026",
+    "year": 2026,
+    "started": "2026-09-27",
+    "stack": [
+      "Python",
+      "pandas",
+      "NumPy",
+      "PyArrow",
+      "MinIO"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/prc_data_challenge"
+      }
+    ]
+  },
+  {
+    "name": "HumaTyper",
+    "flapLength": 9,
+    "desc": "An Electron desktop app that replays pasted text as real keystrokes into whatever window has focus. Keys are synthesised through the Win32 SendInput API, and Rhythm mode draws each interval from a model fitted to 1.1 million keystrokes from the 136M Keystrokes dataset.",
+    "event": "2026",
+    "year": 2026,
+    "started": "2026-08-20",
+    "mediaSrc": "https://www.youtube.com/embed/JglzOtT29hQ",
+    "stack": [
+      "TypeScript",
+      "Electron",
+      "Node.js",
+      "PowerShell",
+      "Win32 SendInput"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/HumaTyper"
+      }
+    ]
+  },
+  {
     "name": "AutoVision",
     "flapLength": 10,
     "desc": "An automated 360° optical inspection rig built on macOS using an Arduino Uno to drive three servos and a stepper motor for cycling through top, side, and back-side views. Captured multi-angle frames are sent as a single payload to Gemini 2.5 Flash for automated circuit defect detection. Features a Streamlit interface with manual slider controls for precise motor and angle adjustments.",
-    "event": "3RD PLACE - 2026",
+    "event": "HTV Hack Day 3RD PLACE",
     "year": 2026,
+    "started": "2026-07-25",
     "mediaSrc": "https://www.youtube.com/embed/toAHYdpgcuI?si=aw7zStHxfNgl8Pxl",
     "stack": [
       "Python",
@@ -124,8 +130,9 @@
     "name": "Halo Assistant",
     "flapLength": 14,
     "desc": "An ElectronJS application designed for JecHacks 2026 to act as an AI assistant that teaches anything. It achieves this by drawing over the user's screen at 60FPS using a canvas overlay (numbers, text, & diagrams). Halo can even move the user's mouse to perform actions for them.",
-    "event": "JecHacks 2026 - 2nd Place",
+    "event": "JecHacks 2nd Place",
     "year": 2026,
+    "started": "2026-07-11",
     "mediaSrc": "https://www.youtube.com/embed/nmboKJn2uPU?si=SmoHfkn-xNq3Dc03",
     "stack": [
       "Electron JS",
@@ -151,6 +158,7 @@
     "desc": "A lightweight surveillance prototype built on the Raspberry Pi 4B. Uses a set of Python scripts for event detection and PELICAN compression software. Features 3 main edge-algorithms: a sound monitor, zone monitor, and detector pipeline, backed by a carbon-aware charging circuit.",
     "event": "STEAM IC 2026",
     "year": 2026,
+    "started": "2025-11-12",
     "mediaSrc": "https://drive.google.com/file/d/1iu30qux5kQ2zjUnPXFTFPc-80SM9EFUX/preview",
     "stack": [
       "Python 3.12.7",
@@ -179,6 +187,7 @@
     "desc": "A platform designed to centralize the tracking of volunteer hours to replace error-prone manual spreadsheet tracking at a local organization.",
     "event": "2025",
     "year": 2025,
+    "started": "2025-10-10",
     "mediaSrc": "https://www.youtube.com/embed/pRXGJyUJ62Y",
     "stack": [
       "Python 3",
@@ -200,6 +209,7 @@
     "desc": "Takes a grid and a word list, checks all eight directions from every starting letter, and highlights each match on the grid. There's no back end. The page loads Pyodide (CPython built for WebAssembly) and runs solver.py itself in the browser, so it's the same code you'd import in a Python REPL, and the grid never leaves the page.",
     "event": "2025",
     "year": 2025,
+    "started": "2025-01-04",
     "stack": [
       "Python 3",
       "Pyodide",

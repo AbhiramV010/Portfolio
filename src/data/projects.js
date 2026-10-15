@@ -24,10 +24,14 @@ function parseAccolade(event, year) {
   return label || null;
 }
 
+export const PODIUM = /\b(1st|2nd|3rd) place\b/i;
+
+// Newest year first; within a year, projects keep their order in projects.json.
 export const PROJECTS = PROJECTS_RAW.map((p) => ({
   ...p,
   slug: slugify(p.name),
   accolade: parseAccolade(p.event, p.year),
+  podium: PODIUM.test(p.event ?? ""),
 })).sort((a, b) => b.year - a.year);
 
 export const YEARS = [...new Set(PROJECTS.map((p) => String(p.year)))].sort().reverse();
