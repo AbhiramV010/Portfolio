@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import LineMark from "./LineMark";
-import { Arrow } from "./icons";
-import { RESUME_DRIVE_URL, ROUTE } from "../lines";
+import { ROUTE } from "../lines";
 
 const FLASH_MS = 1500;
 const SKIP_MS = 350;
@@ -22,7 +21,7 @@ function useRouteSequence(current) {
   return phase;
 }
 
-export default function RouteBar({ current, line, onNavigate }) {
+export default function RouteBar({ current, line, onNavigate, onResume }) {
   const phase = useRouteSequence(current);
   const last = ROUTE.length - 1;
   const progress = Math.min(phase, last) / last;
@@ -45,29 +44,20 @@ export default function RouteBar({ current, line, onNavigate }) {
               const inner = (
                 <>
                   <span className="rm-dot" aria-hidden="true" />
-                  <span className="rm-label">
-                    {stop.label}
-                    {stop.external && <Arrow dir="external" />}
-                  </span>
+                  <span className="rm-label">{stop.label}</span>
                 </>
               );
 
               return (
                 <li key={stop.key} className={`${isCurrent ? "is-current" : ""}${seq}`.trim() || undefined}>
-                  {stop.external ? (
-                    <a className="rm-stop" href={RESUME_DRIVE_URL} target="_blank" rel="noopener noreferrer">
-                      {inner}
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      className="rm-stop"
-                      onClick={() => onNavigate(stop.key)}
-                      aria-current={isCurrent ? "page" : undefined}
-                    >
-                      {inner}
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="rm-stop"
+                    onClick={() => (stop.modal ? onResume() : onNavigate(stop.key))}
+                    aria-current={isCurrent ? "page" : undefined}
+                  >
+                    {inner}
+                  </button>
                 </li>
               );
             })}

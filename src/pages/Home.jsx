@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Fascia from "../components/Fascia";
 import Train from "../components/Train";
+import StatsSign from "../components/StatsSign";
 import SystemMap from "../components/SystemMap";
 import { Arrow } from "../components/icons";
-import { RESUME_DRIVE_URL } from "../lines";
 import "./Home.css";
 
 const ROLES = ["High School Junior", "embedded systems", "software developer", "aircraft", "aspiring engineer"];
@@ -92,7 +92,7 @@ const WAYS = [
   { key: "about", label: "About Me", line: 3 },
 ];
 
-export default function Home({ onNavigate }) {
+export default function Home({ onNavigate, onResume }) {
   return (
     <>
       <SystemMap />
@@ -108,10 +108,10 @@ export default function Home({ onNavigate }) {
               <Arrow />
             </button>
           ))}
-          <a className="way line-4" href={RESUME_DRIVE_URL} target="_blank" rel="noopener noreferrer">
+          <button type="button" className="way line-4" onClick={onResume}>
             <span className="way-label">Resume</span>
-            <Arrow dir="external" />
-          </a>
+            <Arrow />
+          </button>
         </nav>
 
         <div className="home-foot">
@@ -145,7 +145,10 @@ export default function Home({ onNavigate }) {
         </div>
       </div>
 
-      <Train />
+      <div className="depot">
+        <StatsSign />
+        <Train />
+      </div>
     </>
   );
 }

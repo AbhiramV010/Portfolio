@@ -5,6 +5,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import About from "./pages/About";
 import RouteBar from "./components/RouteBar";
 import Arrival from "./components/Arrival";
+import ResumeModal from "./components/ResumeModal";
 import { PROJECTS } from "./data/projects";
 import { ROUTE, VIEW_LINE, VIEW_STOP } from "./lines";
 import { playClick } from "./sound";
@@ -23,6 +24,7 @@ export default function App() {
   const [transitioning, setTransitioning] = useState(false);
   const [sweepLine, setSweepLine] = useState(1);
   const [arrival, setArrival] = useState(null);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const pendingView = useRef("home");
   const pendingProjectSlug = useRef(null);
   const mainRef = useRef(null);
@@ -74,6 +76,11 @@ export default function App() {
     mainRef.current?.focus({ preventScroll: true });
   }, [displayView, selectedProjectSlug]);
 
+  const openResume = () => {
+    playClick();
+    setResumeOpen(true);
+  };
+
   let page;
   if (displayView === "projects") {
     page = <Projects onBack={() => navigate("home")} onOpenProject={(slug) => navigate("project", slug)} />;
@@ -82,7 +89,7 @@ export default function App() {
   } else if (displayView === "about") {
     page = <About onBack={() => navigate("home")} />;
   } else {
-    page = <Home onNavigate={navigate} />;
+    page = <Home onNavigate={navigate} onResume={openResume} />;
   }
 
   const line = VIEW_LINE[displayView];
@@ -90,13 +97,14 @@ export default function App() {
   return (
     <>
       <div className={`station line-${line}`}>
-        <RouteBar current={VIEW_STOP[displayView]} line={line} onNavigate={navigate} />
+        <RouteBar current={VIEW_STOP[displayView]} line={line} onNavigate={navigate} onResume={openResume} />
         <main className={`station-main${transitioning ? " is-fading" : ""}`} ref={mainRef} tabIndex={-1}>
           {page}
         </main>
       </div>
       {transitioning && <div className={`sweep line-${sweepLine}`} aria-hidden="true" />}
       {arrival && <Arrival key={arrival.id} label={arrival.label} />}
+      {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
     </>
   );
 }

@@ -382,8 +382,12 @@ a {
   overflow-wrap: anywhere;
 }
 
+.fascia--hero {
+  padding-block: clamp(20px, 5vh, 56px) clamp(14px, 3vh, 28px);
+}
+
 .fascia--hero .fascia-name {
-  font-size: clamp(2.2rem, 7.6vw, 5.5rem);
+  font-size: clamp(2.2rem, min(7.6vw, 9vh), 5.5rem);
 }
 
 .fascia-sub {
@@ -591,4 +595,58 @@ a {
   0% { opacity: 0; transform: translate(-50%, -18px); }
   10%, 80% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -8px); }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  animation: fade-in 0.2s ease both;
+}
+
+.modal-card {
+  width: min(960px, 100%);
+  height: min(90vh, 1100px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  animation: rise 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.modal-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-sign);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: var(--text-2);
+}
+
+.modal-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
