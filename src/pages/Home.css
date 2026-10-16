@@ -203,7 +203,7 @@
 }
 
 .train {
-  --pace: 3;
+  --pace: 1;
   --cycle: calc(28s * var(--pace));
   --lead: 2s;
   --train-h: clamp(30px, 4.4vw, 46px);

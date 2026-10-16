@@ -49,7 +49,7 @@
 
   --line-1: #ffc72c;
   --line-2: #00a651;
-  --streetcar: #e8402f;
+  --line-3: #0082c9;
   --line-5: #f58a2a;
 
   --line: var(--line-1);
@@ -65,7 +65,7 @@
 
 .line-1 { --line: var(--line-1); }
 .line-2 { --line: var(--line-2); }
-.line-streetcar { --line: var(--streetcar); }
+.line-3 { --line: var(--line-3); }
 .line-5 { --line: var(--line-5); }
 
 *,

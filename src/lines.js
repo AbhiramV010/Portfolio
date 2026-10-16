@@ -5,7 +5,7 @@ export const ROUTE = [
   { key: "home", label: "Home", line: 1 },
   { key: "projects", label: "Projects", line: 2 },
   { key: "about", label: "About Me", line: 5 },
-  { key: "resume", label: "Resume", line: "streetcar", modal: true },
+  { key: "resume", label: "Resume", line: "3", modal: true },
 ];
 
 // `project` (detail) shares the Projects stop and line.

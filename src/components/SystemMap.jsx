@@ -15,7 +15,7 @@ const LINES = [
     stations: [[820, 60], [1000, 170]],
   },
   {
-    line: "streetcar",
+    line: "3",
     d: "M1210 660H1100L1030 730H860",
     stations: [[1100, 660], [860, 730]],
   },

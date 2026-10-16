@@ -116,7 +116,7 @@ export default function Home({ onNavigate, onResume }) {
               <Arrow />
             </Link>
           ))}
-          <button type="button" className="way line-streetcar" onClick={onResume}>
+          <button type="button" className="way line-3" onClick={onResume}>
             <span className="way-label">Resume</span>
             <Arrow />
           </button>
