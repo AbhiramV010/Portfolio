@@ -226,5 +226,22 @@
         "href": "https://searchsolver.netlify.app"
       }
     ]
+  },
+  {
+    "name": "CPS Test",
+    "flapLength": 8,
+    "desc": "One of the first Python projects I ever made. A CustomTkinter window gives you three seconds to hit a button as many times as you can, then closes and prints your clicks per second to the terminal.",
+    "event": "2023",
+    "year": 2023,
+    "stack": [
+      "Python 3",
+      "CustomTkinter"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/CPS_test"
+      }
+    ]
   }
 ]
