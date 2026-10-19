@@ -1,5 +1,28 @@
 [
   {
+    "name": "CaptainGemma",
+    "flapLength": 12,
+    "desc": "An AI pilot that flies a Cessna 172 in JSBSim while a model plane on a three-motor Arduino mount copies its attitude in real time. Gemma 3 4B runs locally through Ollama, sets flight targets every few seconds, and learns from notes it writes after each failed attempt. Built with Shubh and Dhyanesh.",
+    "event": "HT6 HackDay 2026 - Best Use of Open Source AI",
+    "year": 2026,
+    "started": "2026-10-18",
+    "mediaSrc": "https://www.youtube.com/embed/Ej8x1W_-mYk",
+    "podium": true,
+    "stack": [
+      "Python",
+      "JSBSim",
+      "Gemma 3 4B",
+      "Ollama",
+      "Arduino Uno"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/ht6hackDay2026"
+      }
+    ]
+  },
+  {
     "name": "pocketChange",
     "flapLength": 12,
     "desc": "A Python trading bot for a self-custody Solana wallet holding about $20 USDC. Signals come from moving-average trend rules, a model trained on candle history, or plain DCA, and every Jupiter swap is simulated first so the input, slippage floor and fees get checked before anything is sent. Trade size, slippage and gas reserve are hard limits, and dropping below a minimum equity sets a halt that only a manual reset clears. A Streamlit dashboard runs as a separate process with a pause switch. Backtests showed no edge after fees, so it runs as an experiment.",

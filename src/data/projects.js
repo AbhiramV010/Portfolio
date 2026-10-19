@@ -31,7 +31,8 @@ export const PROJECTS = PROJECTS_RAW.map((p) => ({
   ...p,
   slug: slugify(p.name),
   accolade: parseAccolade(p.event, p.year),
-  podium: PODIUM.test(p.event ?? ""),
+  // `podium: true` in projects.json forces a trophy for wins the regex misses (category prizes).
+  podium: p.podium ?? PODIUM.test(p.event ?? ""),
 })).sort((a, b) => b.year - a.year);
 
 export const YEARS = [...new Set(PROJECTS.map((p) => String(p.year)))].sort().reverse();
