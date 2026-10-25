@@ -10,9 +10,9 @@
     "podium": true,
     "stack": [
       "Python",
+      "C++",
       "JSBSim",
       "Gemma 3 4B",
-      "Ollama",
       "Arduino Uno"
     ],
     "actions": [
