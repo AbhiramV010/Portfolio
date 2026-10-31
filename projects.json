@@ -1,5 +1,23 @@
 [
   {
+    "name": "Zombie Spideroid",
+    "flapLength": 16,
+    "desc": "A spider-shaped radio companion for a zombie, set in a 1944 outbreak. It decodes an incoming Morse transmission letter by letter on a retro HUD, then sweeps the room with an ultrasonic sensor on a stepper-driven head, maps it, counts the humans and panics out loud. When people are nearby it snaps a webcam crop and broadcasts it as Robot36 SSTV audio that a phone decodes live. A local Gemma model writes the lines while deterministic code decides the facts, and every model call has a time cap and a canned fallback so the demo never stalls.",
+    "event": "Hack-or-Treat 2026",
+    "year": 2026,
+    "started": "2026-10-31",
+    "mediaSrc": "https://www.youtube.com/embed/eyID4pmsm5Y",
+    "stack": [
+      "Python",
+      "C++",
+      "Arduino Uno",
+      "Gemma",
+      "Ollama",
+      "PySSTV",
+      "NumPy"
+    ]
+  },
+  {
     "name": "CaptainGemma",
     "flapLength": 12,
     "desc": "An AI pilot that flies a Cessna 172 in JSBSim while a model plane on a three-motor Arduino mount copies its attitude in real time. Gemma 3 4B runs locally through Ollama, sets flight targets every few seconds, and learns from notes it writes after each failed attempt. Built with Shubh and Dhyanesh.",
