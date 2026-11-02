@@ -13,10 +13,14 @@
 }
 
 .detail-desc {
-  max-width: 62ch;
   color: var(--text-2);
   font-size: 1.02rem;
   line-height: 1.75;
+}
+
+/* Cap line length only beside media; without media the copy spans the full width. */
+.detail--media .detail-desc {
+  max-width: 62ch;
 }
 
 .detail-actions {
