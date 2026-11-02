@@ -1,5 +1,29 @@
 [
   {
+    "name": "Quack Overflow",
+    "flapLength": 14,
+    "desc": "A talking rubber duck that listens to you ramble about code, writes it, and types it into Notepad character by character. Speech is transcribed locally with faster-whisper, a local Gemma model through Ollama writes the code plus a one-line summary the duck says out loud, and a stage overlay shows what you said next to what it typed. Ask for something reckless and it refuses, pans on a stepper to glare at you with a laser eye and swings its sword. An Arduino Uno Q splits the hardware between a Linux side relaying UDP commands and an MCU driving the motor, LEDs and OLED, and every piece has a fallback so the demo survives half the stack going down. Built with Mridul.",
+    "event": "LarpHacks 26 - First Place",
+    "year": 2026,
+    "started": "2026-11-01",
+    "podium": true,
+    "stack": [
+      "Python",
+      "C++",
+      "Arduino Uno Q",
+      "Gemma 3 4B",
+      "Ollama",
+      "faster-whisper",
+      "HTML/JS"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/AbhiramV010/LarpHacks2026"
+      }
+    ]
+  },
+  {
     "name": "Zombie Spideroid",
     "flapLength": 16,
     "desc": "A spider-shaped radio companion for a zombie, set in a 1944 outbreak. It decodes an incoming Morse transmission letter by letter on a retro HUD, then sweeps the room with an ultrasonic sensor on a stepper-driven head, maps it, counts the humans and panics out loud. When people are nearby it snaps a webcam crop and broadcasts it as Robot36 SSTV audio that a phone decodes live. A local Gemma model writes the lines while deterministic code decides the facts, and every model call has a time cap and a canned fallback so the demo never stalls.",
