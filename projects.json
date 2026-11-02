@@ -11,9 +11,8 @@
       "Python",
       "C++",
       "Arduino Uno Q",
-      "Gemma 3 4B",
-      "Ollama",
-      "faster-whisper",
+      "Qwen",
+      "ElevenLabs API",
       "HTML/JS"
     ],
     "actions": [
@@ -203,8 +202,8 @@
     "stack": [
       "Electron JS",
       "HTML/CSS",
-      "Anthropic API",
-      "ElevenLabs TTS & STT",
+      "Claude Platform",
+      "ElevenLabs API",
       "nut-js"
     ],
     "actions": [
