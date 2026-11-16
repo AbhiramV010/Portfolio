@@ -1,5 +1,28 @@
 [
   {
+    "name": "T_Minus_6",
+    "flapLength": 9,
+    "desc": "A lunar mobile-base game with a real rover, a handheld HUD and a laser asteroid tower, driven by real NASA data. Students run an outpost by balancing four meters (power, oxygen, food and shield) while radiation storms, heat and cold spells and asteroid strikes arrive on schedules built from DONKI, LRO Diviner and NASA Meteoroid Environment Office archives. The game runs in Python and pygame on a laptop. An Arduino UNO Q drives the rover over Wi-Fi with a Logitech C920 on a stepper pan, a second UNO Q runs the HUD with a 16x2 LCD, OLED, LEDs, buzzer and joystick, and an Arduino UNO R3 aims a green laser at the predicted landing spot with a stepper and servo, using an HC-SR04 for distance. Every link speaks plain text over serial or Wi-Fi and times out safely if it drops.",
+    "event": "NASA Space Apps 2026 Toronto, team D NOVAS",
+    "year": 2026,
+    "started": "2026-11-14",
+    "stack": [
+      "Python",
+      "pygame",
+      "Arduino UNO Q",
+      "Arduino UNO R3",
+      "Wi-Fi",
+      "serial",
+      "NASA data"
+    ],
+    "actions": [
+      {
+        "label": "Source Code",
+        "href": "https://github.com/cyberzunior/nasaspaceapps26"
+      }
+    ]
+  },
+  {
     "name": "Quack Overflow",
     "flapLength": 14,
     "desc": "A talking rubber duck that listens to you ramble about code, writes it, and types it into Notepad character by character. Speech is transcribed locally with faster-whisper, a local Gemma model through Ollama writes the code plus a one-line summary the duck says out loud, and a stage overlay shows what you said next to what it typed. Ask for something reckless and it refuses, pans on a stepper to glare at you with a laser eye and swings its sword. An Arduino Uno Q splits the hardware between a Linux side relaying UDP commands and an MCU driving the motor, LEDs and OLED, and every piece has a fallback so the demo survives half the stack going down. Built with Mridul.",
